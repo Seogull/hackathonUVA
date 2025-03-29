@@ -45,8 +45,8 @@ def get_opponent(client_id: str):  # get opponent of current player
                         opponent_id = get_opponent(client_id)
                         await websocket.send_text(f" Combo set: {','.join(combo)}")
                         await clients[opponent_id].send_text(f" {client_id} sent you a combo. Type the combo.")
+                        combo_start_time = time.time()
                     else:
-                        # Timeout: combo not sent in 10 seconds
                         await websocket.send_text("Time's up. You missed your turn.")
                         combo_sender = None
                         current_combo = None
@@ -54,9 +54,9 @@ def get_opponent(client_id: str):  # get opponent of current player
                         current_turn_index += 1
                         continue  # Skip to next round
 
-                    # Switch to the other player's turn (to replicate combo)
                     current_turn_index += 1
-
+                except Exception as e:
+                    await websocket.send_text(f"Error: {str(e)}")
 					
 
 
