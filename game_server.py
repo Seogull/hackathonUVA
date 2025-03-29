@@ -39,5 +39,12 @@ def get_opponent(client_id: str): #get opponent of current player
                          if len(combo) != 4:
                              await websocket.send_text("Combo must have exactly 4 moves"):
                              continue
+                         current_combo =  combo
+                         combo_sender = client_id
+                         opponent_id = get_opponent(client_id)
+                         await websocket.send_text(f" Combo set: {','.join(combo)}")
+                         await clients[opponent_id].send_text(f" {client_id} sent you a combo. Type it now!")
+
+
 
            
