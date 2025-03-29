@@ -10,7 +10,8 @@ const arrows = {
 let userScore = 0;
 let opponentScore = 0;
 let round = 1;
-
+let userHealth = 3; // User's health
+let tempHealth = 3; 
 let sequence = [];
 let userInput = [];
 
@@ -41,6 +42,37 @@ function displaySequence() {
     });
 }
 
+function displayHealth() {
+    const healthContainer = document.getElementById('health-display');
+    healthContainer.innerHTML = ''; // Clear any previous hearts
+
+    // Loop to create hearts based on userHealth
+    for (let i = 0; i < userHealth; i++) { // Assuming the max health is 5
+        const heart = document.createElement('span');
+        heart.classList.add('heart');
+
+        // Add either full or empty heart depending on userHealth
+        if (i < tempHealth) {
+            heart.textContent = '❤️'; // Full heart
+        } else {
+            heart.textContent = '🤍'; // Empty heart
+            heart.classList.add('empty-heart'); // Optional: Make empty hearts lighter
+        }
+
+        healthContainer.appendChild(heart);
+    }
+}
+
+function updateHealth() {
+    tempHealth--; // Decrease health by 1
+    displayHealth(); // Update the health display
+
+    if (userHealth <= 0) {
+        alert("Game Over! Your score: " + userScore);
+        resetGame();
+    }
+}
+
 // Get the corresponding arrow symbol for display
 function getArrowText(key) {
     switch(key) {
@@ -53,12 +85,12 @@ function getArrowText(key) {
 }
 
 // Check the user's input after each key press
-// Check the user's input after each key press
 function checkInput() {
     if (userInput.length <= sequence.length) {
         if (userInput[userInput.length - 1] !== sequence[userInput.length - 1]) {
             // Incorrect input
             alert("Incorrect! Try again.");
+            updateHealth(); // Decrease health
             userInput = [];  // Reset input and restart the sequence
             generateSequence(); // Generate a new sequence
             return;
@@ -103,7 +135,7 @@ window.addEventListener('keydown', (event) => {
         arrows[event.key].classList.add('pressed');
         setTimeout(() => {
             arrows[event.key].classList.remove('pressed'); // Remove the animation after 200ms
-        }, 200);
+        }, 50);
         checkInput(); // Check input after each key press
     }
 });
@@ -131,3 +163,4 @@ function startGame() {
 
 // Start the game
 startGame();
+displayHealth();
