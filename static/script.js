@@ -35,7 +35,7 @@ function displaySequence() {
     // Loop through the sequence and display each arrow
     sequence.forEach(key => {
         const arrowDiv = document.createElement('div');
-        arrowDiv.classList.add('arrow-sequence');
+        arrowDiv.classList.add('arrow');
         arrowDiv.textContent = getArrowText(key);
         sequenceContainer.appendChild(arrowDiv);
     });
