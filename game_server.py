@@ -26,8 +26,8 @@ def get_opponent(client_id: str): #get opponent of current player
     try:
         while rounds_played < max_rounds:
             current_turn = turn_order[current_turn_index % 2]
-            if client_id != current_turn:
-                await websocket.send_text("Not your turn!")
+            if client_id == current_turn:
+                await websocket.send_text(f" Round {rounds_played + 1}: Your turn to send a 4-move combo (10s)...")
                 continue
 
            
