@@ -1,4 +1,3 @@
-
 const userScoreElement = document.getElementById('user-score');
 const opponentScoreElement = document.getElementById('opponent-score');
 const arrows = {
@@ -10,6 +9,11 @@ const arrows = {
 
 let userScore = 0;
 let opponentScore = 0;
+
+let sequence = [];
+let userInput = [];
+
+
 
 document.addEventListener('keydown', (event) => {
     if (arrows[event.key]) {
