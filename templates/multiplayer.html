@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multiplayer Arrow Game</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <!-- Scoreboard -->
+  <div class="scoreboard">
+    <div class="score">
+      <h2>Player 1 Time: <span id="player1-time">0</span>s</h2>
+    </div>
+    <div class="score">
+      <h2>Player 2 Time: <span id="player2-time">0</span>s</h2>
+    </div>
+  </div>
+
+  <!-- Game Info -->
+  <div class="game-info">
+    <h1>Multiplayer Arrow Game</h1>
+    <div id="game-round">Round 1</div>
+    <div id="player-turn">Player 1's turn: Repeat the combo</div>
+    <div id="combo-entry-status">🎯 Memorize and repeat the combo!</div>
+    
+    <!-- Moved Combo Display here -->
+    <div class="arrows-to-press" id="arrows-to-press"></div>
+  </div>
+
+  <!-- Arrows -->
+  <div class="container">
+    <div class="empty"></div>
+    <div class="arrow" id="up">↑</div>
+    <div class="empty"></div>
+    <div class="arrow" id="left">←</div>
+    <div class="empty"></div>
+    <div class="arrow" id="right">→</div>
+    <div class="empty"></div>
+    <div class="arrow" id="down">↓</div>
+    <div class="empty"></div>
+  </div>
+
+  <!-- Key Press Feedback -->
+  <div class="sprite-container">
+    <h1>Keys Pressed</h1>
+    <div id="output">No key pressed</div>
+    <div class="sprite" id="sprite"></div>
+  </div>
+
+  <!-- Final Result -->
+  <div id="final-result" style="font-weight: bold; text-align: center; margin-top: 20px;"></div>
+
+  <!-- Centered Play Again Button -->
+  <div id="play-again-container" style="display: none; text-align: center; margin-top: 30px;">
+    <button id="play-again-btn" style="
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      background-color: #2ecc71;
+      border: none;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;">
+      🔁 Play Again
+    </button>
+  </div>
+
+  <script src="../static/multiplayer.js" defer></script>
+</body>
+</html>
