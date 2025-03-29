@@ -43,7 +43,8 @@ def get_opponent(client_id: str): #get opponent of current player
                          combo_sender = client_id
                          opponent_id = get_opponent(client_id)
                          await websocket.send_text(f" Combo set: {','.join(combo)}")
-                         await clients[opponent_id].send_text(f" {client_id} sent you a combo. Type it now!")
+                         await clients[opponent_id].send_text(f" {client_id} sent you a combo. Type the combo.")
+
 
 
 
