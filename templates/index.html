@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow Key Game</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            font-family: Arial, sans-serif;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .score h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 100px 100px 100px;
+            grid-template-rows: 100px 100px 100px;
+            gap: 10px;
+        }
+
+        .arrow {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            user-select: none;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .arrow.pressed {
+            transform: scale(0.9);
+            background-color: lightgray;
+        }
+
+        .empty {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="scoreboard">
+        <div class="score">
+            <h2>User Score: <span id="user-score">0</span></h2>
+        </div>
+        <div class="score">
+            <h2>Opponent Score: <span id="opponent-score">0</span></h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="empty"></div>
+        <div class="arrow" id="up">↑</div>
+        <div class="empty"></div>
+        <div class="arrow" id="left">←</div>
+        <div class="empty"></div>
+        <div class="arrow" id="right">→</div>
+        <div class="empty"></div>
+        <div class="arrow" id="down">↓</div>
+        <div class="empty"></div>
+    </div>
+    <script src="/static/script.js" defer></script>
+    
+</body>
+</html>
