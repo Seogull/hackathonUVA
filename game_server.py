@@ -16,3 +16,9 @@ completion_times: Dict[str, List[float]] = { # Score/time of each player
     "player1": [],
     "player2": []
 }
+
+def get_opponent(client_id: str): #get opponent of current player
+    if client_id == "player1":
+        return "player2"
+    else:
+        return "player1"
