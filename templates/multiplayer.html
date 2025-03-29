@@ -17,18 +17,17 @@
     </div>
   </div>
 
-  <!-- Game Info -->
+  <!-- Game Info (Combo display is placed here for top-middle placement) -->
   <div class="game-info">
     <h1>Multiplayer Arrow Game</h1>
+    <!-- Round number is per player -->
     <div id="game-round">Round 1</div>
     <div id="player-turn">Player 1's turn: Repeat the combo</div>
     <div id="combo-entry-status">🎯 Memorize and repeat the combo!</div>
+    <div class="arrows-to-press" id="arrows-to-press"></div>
   </div>
 
-  <!-- Combo Display -->
-  <div class="arrows-to-press" id="arrows-to-press"></div>
-
-  <!-- Arrows -->
+  <!-- Arrows Grid -->
   <div class="container">
     <div class="empty"></div>
     <div class="arrow" id="up">↑</div>
@@ -48,10 +47,10 @@
     <div class="sprite" id="sprite"></div>
   </div>
 
-  <!-- Final Result -->
-  <div id="final-result" style="font-weight: bold; text-align: center; margin-top: 20px;"></div>
+  <!-- Final Result (Winner and times) -->
+  <div id="final-result" style="font-weight: bold; text-align: center; margin-top: 20px; display: block;"></div>
 
-  <!-- Centered Play Again Button -->
+  <!-- Play Again Button -->
   <div id="play-again-container" style="display: none; text-align: center; margin-top: 30px;">
     <button id="play-again-btn" style="
       padding: 12px 24px;
