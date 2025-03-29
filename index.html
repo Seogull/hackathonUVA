@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="scoreboard">
+    <div class="score">
+        <h2>User Score: <span id="user-score">0</span></h2>
+    </div>
+    <div class="score">
+        <h2>Opponent Score: <span id="opponent-score">0</span></h2>
+    </div>
+</div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow Key Game</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 100px 100px 100px;
+            grid-template-rows: 100px 100px 100px;
+            gap: 10px;
+        }
+
+        .arrow {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            user-select: none;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .arrow.pressed {
+            transform: scale(0.9);
+            background-color: lightgray;
+        }
+
+        .empty {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="empty"></div>
+        <div class="arrow" id="up">↑</div>
+        <div class="empty"></div>
+        <div class="arrow" id="left">←</div>
+        <div class="empty"></div>
+        <div class="arrow" id="right">→</div>
+        <div class="empty"></div>
+        <div class="arrow" id="down">↓</div>
+        <div class="empty"></div>
+    </div>
+
+    <script>
+        const arrows = {
+            ArrowUp: document.getElementById('up'),
+            ArrowDown: document.getElementById('down'),
+            ArrowLeft: document.getElementById('left'),
+            ArrowRight: document.getElementById('right')
+        };
+
+        document.addEventListener('keydown', (event) => {
+            if (arrows[event.key]) {
+                arrows[event.key].classList.add('pressed');
+            }
+        });
+
+        document.addEventListener('keyup', (event) => {
+            if (arrows[event.key]) {
+                arrows[event.key].classList.remove('pressed');
+            }
+        });
+    </script>
+</body>
+</html>
