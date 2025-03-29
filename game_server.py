@@ -22,3 +22,12 @@ def get_opponent(client_id: str): #get opponent of current player
         return "player2"
     else:
         return "player1"
+    
+    try:
+        while rounds_played < max_rounds:
+            current_turn = turn_order[current_turn_index % 2]
+            if client_id != current_turn:
+                await websocket.send_text("Not your turn!")
+                continue
+
+           
