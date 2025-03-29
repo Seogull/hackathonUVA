@@ -80,31 +80,28 @@ def get_opponent(client_id: str):  # get opponent of current player
     except WebSocketDisconnect:
         clients.pop(client_id, None)
         
-async def competetion_winner():
+async def declare_winner():
     p1_time = sum(completion_times["player1"])
     p2_time = sum(completion_times["player2"])
-    
-	if p1_time < p2_time:
-    	result = "🏁 Game Over!\n"
-    	result += f"⏱️ player1: {p1_time:.2f}s total\n"
-    	result += f"⏱️ player2: {p2_time:.2f}s total\n"
-    	result += "🏆 Winner: player1!"
-	elif p2_time < p1_time:
-   		result = "🏁 Game Over!\n"
-    	result += f"⏱️ player1: {p1_time:.2f}s total\n"
-    	result += f"⏱️ player2: {p2_time:.2f}s total\n"
-    	result += "🏆 Winner: player2!"
-	else:
-    	result = "🏁 Game Over!\n"
-    	result += f"⏱️ player1: {p1_time:.2f}s total\n"
-    	result += f"⏱️ player2: {p2_time:.2f}s total\n"
-    	result += "🤝 It's a tie!"
 
-# Send result to both players directly
-if "player1" in clients:
-    await clients["player1"].send_text(result)
-if "player2" in clients:
-    await clients["player2"].send_text(result)
+    result = "🏁 Game Over!\n"
+    result += f"player1: {p1_time:.2f}s total\n"
+    result += f"player2: {p2_time:.2f}s total\n"
+
+    # Determine winner
+    if p1_time < p2_time:
+        result += "Winner: player1!"
+    elif p2_time < p1_time:
+        result += "Winner: player2!"
+    else:
+        result += " t's a tie!"
+
+    # Send result to both players directly
+    if "player1" in clients:
+        await clients["player1"].send_text(result)
+    if "player2" in clients:
+        await clients["player2"].send_text(result)
+
                     
                     
                      
