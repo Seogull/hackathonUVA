@@ -57,8 +57,54 @@ def get_opponent(client_id: str):  # get opponent of current player
                     current_turn_index += 1
                 except Exception as e:
                     await websocket.send_text(f"Error: {str(e)}")
-					
+            elif combo_sender and current_combo:
+                msg =  await websocket.receive_text()
+                attempted_combo = msg.split(",")
+                time_taken = round(time.time() - combo_start_time,2)
+                
+                if attempted_combo == current_combo:
+                    await websocket.send_text(f"Correct! You took {time_taken}s")
+                    await clients[combo_sender].send_text(f"{client_id} completed your combo in {time_taken}s!")
+                    completion_times[client_id].append(time_taken)
+                else:
+                    await websocket.send_text(f"Incorrect! Wrong combo")
+                    await clients[combo_sender].send_text(f"{client_id} failed your combo")
+                    completion_times[client_id].append(15.0)
+                current_combo = None
+                combo_sender = None
+                combo_start_time = None
+                
+                rounds_player += 1
+                current_turn_index += 1
+        await competetion_winner()
+    except WebSocketDisconnect:
+        clients.pop(client_id, None)
+        
+async def competetion_winner():
+    p1_time = sum(completion_times["player1"])
+    p2_time = sum(completion_times["player2"])
+    
+	if p1_time < p2_time:
+    	result = "🏁 Game Over!\n"
+    	result += f"⏱️ player1: {p1_time:.2f}s total\n"
+    	result += f"⏱️ player2: {p2_time:.2f}s total\n"
+    	result += "🏆 Winner: player1!"
+	elif p2_time < p1_time:
+   		result = "🏁 Game Over!\n"
+    	result += f"⏱️ player1: {p1_time:.2f}s total\n"
+    	result += f"⏱️ player2: {p2_time:.2f}s total\n"
+    	result += "🏆 Winner: player2!"
+	else:
+    	result = "🏁 Game Over!\n"
+    	result += f"⏱️ player1: {p1_time:.2f}s total\n"
+    	result += f"⏱️ player2: {p2_time:.2f}s total\n"
+    	result += "🤝 It's a tie!"
 
-
-
-		   
+# Send result to both players directly
+if "player1" in clients:
+    await clients["player1"].send_text(result)
+if "player2" in clients:
+    await clients["player2"].send_text(result)
+                    
+                    
+                     
