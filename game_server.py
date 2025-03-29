@@ -28,6 +28,16 @@ def get_opponent(client_id: str): #get opponent of current player
             current_turn = turn_order[current_turn_index % 2]
             if client_id == current_turn:
                 await websocket.send_text(f" Round {rounds_played + 1}: Your turn to send a 4-move combo (10s)...")
-                continue
+                
+                try:
+                     combo_task = asyncio.create_task(websocket.receive_text())
+                     done = await asyncio.wait({combo_task}, timeout=10, return_when=asyncio.FIRST_COMPLETED)
+
+                     if combo_task in done:
+                         combo = combo_task.result().split(",")
+
+                         if len(combo) != 4:
+                             await websocket.send_text("Combo must have exactly 4 moves"):
+                             continue
 
            
