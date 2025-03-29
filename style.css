@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    height: 100vh;
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: auto 1fr;
@@ -8,12 +8,29 @@ body {
     background-size: 400% 400%;
     animation: rainbow 10s linear infinite;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 @keyframes rainbow {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
 }
+.hearts-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .heart {
+    font-size: 32px;
+    color: red;
+    margin: 0 5px;
+  }
+
+  .empty-heart {
+    color: lightgray; /* For empty hearts */
+  }
 
 .scoreboard {
     grid-column: 1 / 2;
@@ -94,6 +111,7 @@ body {
     font-weight: bold;
     user-select: none;
     transition: transform 0.1s ease, background-color 0.1s ease;
+    flex-shrink: 1;
 }
 
 .arrow.pressed {
@@ -106,8 +124,9 @@ body {
 }
 
 .sprite-container {
-    grid-column: 3 / 4;
-    grid-row: 1 / 3;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -115,6 +134,9 @@ body {
     padding: 20px;
     border-radius: 10px;
     margin: 10px;
+    overflow: hidden;
+    max-width: calc(100vw - 20px); /* Prevents it from going off screen */
+    box-sizing: border-box;
 }
 
 .sprite {
