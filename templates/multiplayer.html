@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Multiplayer Arrow Game</title>
   <link rel="stylesheet" href="../style.css" />
-  <!-- Optional inline CSS to fix the play again button to the top left -->
   <style>
+    /* Fix the Play Again button to the top left so it’s always visible */
     #play-again-container {
       position: fixed;
       top: 10px;
@@ -40,6 +40,8 @@
     <div class="score">
       <h2>Player 2 Time: <span id="player2-time">0</span>s</h2>
     </div>
+    <!-- Final Result container added under Player 2 -->
+    <div class="score" id="final-result" style="display: none; margin-top: 10px;"></div>
   </div>
 
   <!-- Game Info (Top Center) -->
@@ -69,11 +71,6 @@
     <h1>Keys Pressed</h1>
     <div id="output">No key pressed</div>
     <div class="sprite" id="sprite"></div>
-  </div>
-
-  <!-- Final Result (Bottom Middle) -->
-  <div id="final-footer" style="grid-column: 2 / 3; grid-row: 3 / 4; text-align: center;">
-    <div id="final-result" style="font-weight: bold; margin-top: 20px; display: none;"></div>
   </div>
 
   <script src="../static/multiplayer.js" defer></script>
