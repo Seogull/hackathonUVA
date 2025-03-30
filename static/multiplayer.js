@@ -1,18 +1,26 @@
-// multiplayer.js
+// Multiplayer Arrow Game - Combined Keydown Version
 
 let players = ["player1", "player2"];
 let currentPlayerIndex = 0;
-let round = 1; // current round per player
-const maxRounds = 3; // number of rounds per player
+let round = 1;
+const maxRounds = 3;
 let combo = [];
 let userInput = [];
 let startTime;
-let acceptingInput = false; // flag to control when key presses are accepted
+let acceptingInput = false;
+
+const arrows = {
+  ArrowUp: document.getElementById('up'),
+  ArrowDown: document.getElementById('down'),
+  ArrowLeft: document.getElementById('left'),
+  ArrowRight: document.getElementById('right')
+};
 
 const completionTimes = {
   player1: [],
   player2: []
 };
+
 const missedArrowsPerPlayer = {
   player1: {
     ArrowUp: 0,
@@ -80,29 +88,29 @@ function startCountdown(callback) {
       status.textContent = `⏳ Starting in ${countdown}...`;
     } else {
       clearInterval(interval);
-      callback(); // Show combo after countdown
+      callback();
     }
   }, 1000);
 }
 
 function nextTurn() {
   if (round > maxRounds) {
-    console.log("Round exceeds maxRounds, ending game");
     return endGame();
   }
 
   updateDisplay();
   combo = generateRandomCombo();
   userInput = [];
-  acceptingInput = false; // disable input until combo is shown
+  acceptingInput = false;
 
   startCountdown(() => {
     displaySequence(combo);
     document.getElementById("combo-entry-status").textContent = "🎯 Memorize and repeat the combo!";
     startTime = Date.now();
-    acceptingInput = true; // enable input after combo is displayed
+    acceptingInput = true;
   });
 }
+
 function getMostMissedArrowText(player) {
   let mostMissed = "";
   let mostMissedCount = 0;
@@ -120,84 +128,77 @@ function getMostMissedArrowText(player) {
     return `✅ No arrows missed!`;
   }
 }
+
 function endGame() {
-  console.log("endGame called");
   const p1 = completionTimes.player1.reduce((a, b) => a + b, 0);
   const p2 = completionTimes.player2.reduce((a, b) => a + b, 0);
 
-
-  let result = `Game Over🏁<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
+  let result = `Game Over🏑<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
   if (p1 < p2) result += "Winner: Player 1🏆";
   else if (p2 < p1) result += "Winner: Player 2🏆";
   else result += "It's a tie🤝";
 
-  const p1Miss = getMostMissedArrowText("player1");
-  const p2Miss = getMostMissedArrowText("player2");
+  result += `<br><br>Player 1 Most Missed: ${getMostMissedArrowText("player1")}`;
+  result += `<br>Player 2 Most Missed: ${getMostMissedArrowText("player2")}`;
 
-  result += `<br><br>Player 1 Most Missed: ${p1Miss}`;
-  result += `<br>Player 2 Most Missed: ${p2Miss}`;
-
-
-  console.log("Result:", result);
   const finalResultDiv = document.getElementById("final-result");
   finalResultDiv.innerHTML = result;
-  finalResultDiv.style.display = "block"; // Ensure result is visible
+  finalResultDiv.style.display = "block";
 
-  // Update scoreboard times
   document.getElementById("player1-time").textContent = p1.toFixed(2);
   document.getElementById("player2-time").textContent = p2.toFixed(2);
 
-  // Stop listening to key presses
-  window.removeEventListener("keydown", handleKeydown);
+  window.removeEventListener("keydown", combinedKeydown);
 }
 
-function handleKeydown(e) {
-  if (!acceptingInput) return; // ignore key presses if not accepting input
+function combinedKeydown(e) {
+  if (!acceptingInput) return;
 
   const key = e.key;
   if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) return;
 
+  if (arrows[key]) {
+    arrows[key].classList.add("pressed");
+    setTimeout(() => {
+      arrows[key].classList.remove("pressed");
+    }, 50);
+  }
+
   document.getElementById("output").textContent = `You pressed: ${getArrowText(key)}`;
   userInput.push(key);
-  // Display the user's input (this overwrites the generated combo display)
   displaySequence(userInput);
 
   if (userInput.length === 4) {
-    acceptingInput = false; // disable further input
+    acceptingInput = false;
     const end = Date.now();
     const timeTaken = ((end - startTime) / 1000).toFixed(2);
 
+    const currentPlayer = getCurrentPlayer();
+
     if (userInput.join() === combo.join()) {
       document.getElementById("combo-entry-status").textContent = `✅ Correct! Time: ${timeTaken}s`;
-      completionTimes[getCurrentPlayer()].push(parseFloat(timeTaken));
+      completionTimes[currentPlayer].push(parseFloat(timeTaken));
     } else {
       document.getElementById("combo-entry-status").textContent = "❌ Wrong combo. +5s penalty.";
-      completionTimes[getCurrentPlayer()].push(5.0);
-    
-      const currentPlayer = getCurrentPlayer();
+      completionTimes[currentPlayer].push(5.0);
 
       for (let i = 0; i < combo.length; i++) {
         if (userInput[i] !== combo[i]) {
           missedArrowsPerPlayer[currentPlayer][combo[i]]++;
         }
       }
-      
     }
 
-    // Increment turn: every key press turn increments the currentPlayerIndex.
     currentPlayerIndex++;
-    // Increment round only after both players have taken their turn.
     if (currentPlayerIndex % players.length === 0) {
       round++;
     }
 
-    console.log(`After turn: currentPlayerIndex=${currentPlayerIndex}, round=${round}`);
     setTimeout(nextTurn, 1500);
   }
 }
 
 function resetGame() {
-  console.log("resetGame called");
   currentPlayerIndex = 0;
   round = 1;
   combo = [];
@@ -205,7 +206,6 @@ function resetGame() {
   completionTimes.player1 = [];
   completionTimes.player2 = [];
 
-  // Reset final result display
   document.getElementById("final-result").innerHTML = "";
   document.getElementById("final-result").style.display = "none";
   document.getElementById("player1-time").textContent = "0";
@@ -218,15 +218,13 @@ function resetGame() {
     }
   }
 
-  // Restart game by re-adding the keydown listener and resetting display
-  window.addEventListener("keydown", handleKeydown);
+  window.addEventListener("keydown", combinedKeydown);
   updateDisplay();
   nextTurn();
 }
 
 document.getElementById("play-again-btn").addEventListener("click", resetGame);
 
-// Start game on page load
-window.addEventListener("keydown", handleKeydown);
+window.addEventListener("keydown", combinedKeydown);
 updateDisplay();
 nextTurn();
