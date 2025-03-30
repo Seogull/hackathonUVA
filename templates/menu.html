@@ -18,7 +18,8 @@
             height: 100vh;
         }
         .menu-container {
-            text-align: center;
+            display: flex;
+            align-items: center;
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
@@ -27,12 +28,17 @@
         .menu-container img {
             max-width: 100%;
             height: auto;
-            margin-bottom: 20px;
+            margin-right: 20px;
+            max-width: 700px;
         }
-        .menu-container button {
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        .menu-buttons button {
             display: block;
             width: 200px;
-            margin: 10px auto;
+            margin: 10px 0;
             padding: 10px;
             font-size: 18px;
             color: white;
@@ -42,18 +48,18 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .menu-container button:hover {
+        .menu-buttons button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="menu-container">
-        <img src="../static/title.png" alt="Game Title"> <!-- Replace with your title PNG -->
-        <button onclick="window.location.href='index.html';">Start Game</button>
-        <button onclick="openTutorial()">Tutorial</button>
+        <img src="/title sword.png" alt="Game Title">
+        <div class="menu-buttons">
+            <button onclick="window.location.href='index.html';">START GAME</button>
+            <button onclick="openTutorial()">TUTORIAL</button>
+        </div>
     </div>
-
-  
 </body>
 </html>
