@@ -13,6 +13,20 @@ const completionTimes = {
   player1: [],
   player2: []
 };
+const missedArrowsPerPlayer = {
+  player1: {
+    ArrowUp: 0,
+    ArrowDown: 0,
+    ArrowLeft: 0,
+    ArrowRight: 0
+  },
+  player2: {
+    ArrowUp: 0,
+    ArrowDown: 0,
+    ArrowLeft: 0,
+    ArrowRight: 0
+  }
+};
 
 function getCurrentPlayer() {
   return players[currentPlayerIndex % players.length];
@@ -89,16 +103,40 @@ function nextTurn() {
     acceptingInput = true; // enable input after combo is displayed
   });
 }
+function getMostMissedArrowText(player) {
+  let mostMissed = "";
+  let mostMissedCount = 0;
 
+  for (let key in missedArrowsPerPlayer[player]) {
+    if (missedArrowsPerPlayer[player][key] > mostMissedCount) {
+      mostMissed = key;
+      mostMissedCount = missedArrowsPerPlayer[player][key];
+    }
+  }
+
+  if (mostMissedCount > 0) {
+    return ` Most missed arrow: ${getArrowText(mostMissed)} (${mostMissedCount} times)⚠️`;
+  } else {
+    return `✅ No arrows missed!`;
+  }
+}
 function endGame() {
   console.log("endGame called");
   const p1 = completionTimes.player1.reduce((a, b) => a + b, 0);
   const p2 = completionTimes.player2.reduce((a, b) => a + b, 0);
 
+
   let result = `Game Over🏁<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
   if (p1 < p2) result += "Winner: Player 1🏆";
   else if (p2 < p1) result += "Winner: Player 2🏆";
   else result += "It's a tie🤝";
+
+  const p1Miss = getMostMissedArrowText("player1");
+  const p2Miss = getMostMissedArrowText("player2");
+
+  result += `<br><br>Player 1 Most Missed: ${p1Miss}`;
+  result += `<br>Player 2 Most Missed: ${p2Miss}`;
+
 
   console.log("Result:", result);
   const finalResultDiv = document.getElementById("final-result");
@@ -135,6 +173,15 @@ function handleKeydown(e) {
     } else {
       document.getElementById("combo-entry-status").textContent = "❌ Wrong combo. +5s penalty.";
       completionTimes[getCurrentPlayer()].push(5.0);
+    
+      const currentPlayer = getCurrentPlayer();
+
+      for (let i = 0; i < combo.length; i++) {
+        if (userInput[i] !== combo[i]) {
+          missedArrowsPerPlayer[currentPlayer][combo[i]]++;
+        }
+      }
+      
     }
 
     // Increment turn: every key press turn increments the currentPlayerIndex.
@@ -164,6 +211,12 @@ function resetGame() {
   document.getElementById("player1-time").textContent = "0";
   document.getElementById("player2-time").textContent = "0";
   document.getElementById("output").textContent = "No key pressed";
+
+  for (let player of players) {
+    for (let key in missedArrowsPerPlayer[player]) {
+      missedArrowsPerPlayer[player][key] = 0;
+    }
+  }
 
   // Restart game by re-adding the keydown listener and resetting display
   window.addEventListener("keydown", handleKeydown);
