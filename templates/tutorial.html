@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #fff;
+            background-color: #000; /* Default background color */
+            background-image: url('/training\ arena.png'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+        }
+        .tutorial-container {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            display: inline-block;
+            margin-top: 50px;
+            border-radius: 10px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            display: flex;
+            align-items: center; /* Align items vertically */
+        }
+        li img {
+            margin-left: 10px; /* Add spacing between text and image */
+        }
+    </style>
+</head>
+<body>
+    <div class="tutorial-container">
+        <h1>Game Tutorial</h1>
+        <p>Use the arrow keys to control the sword's direction and click the corresponding swords from left to right:</p>
+        <ul>
+            <li><strong>Up Arrow:</strong> <img src="/swordup.png" alt="Sword Up" width="50"></li>
+            <li><strong>Left Arrow:</strong> <img src="/swordleft.png" alt="Sword Left" width="50"></li>
+            <li><strong>Right Arrow:</strong> <img src="/swordright.png" alt="Sword Right" width="50"></li>
+            <li><strong>Down Arrow:</strong> <img src="/sworddown.png" alt="Sword Down" width="50"></li>
+        </ul>
+        <p>Get ready to master your sword skills!</p>
+    </div>
+    <button onclick="window.location.href='menu.html'" style="
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;">
+    ⏪ Go Back
+  </button>
+</body>
+</html>
