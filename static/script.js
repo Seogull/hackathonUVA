@@ -1,5 +1,4 @@
 const userScoreElement = document.getElementById('user-score');
-const opponentScoreElement = document.getElementById('opponent-score');
 const arrows = {
     ArrowUp: document.getElementById('up'),
     ArrowDown: document.getElementById('down'),
@@ -8,7 +7,6 @@ const arrows = {
 };
 
 let userScore = 0;
-let opponentScore = 0;
 let round = 1;
 let userHealth = 3; // User's health
 let tempHealth = 3; 
@@ -18,6 +16,7 @@ let startTime; // To track the start time
 let elapsedTime = 0; // To store the elapsed time
 let timerInterval;
 let timeRemaining = timeLimit; // Time limit for each round
+let gameOver = false; // Flag to track if the game is over
 let sequence = [];
 let userInput = [];
 
@@ -36,18 +35,21 @@ function generateSequence() {
 
 
 function startTimer() {
+    console.log("Starting timer for round:", round);
     remainingTime = timeLimit; // Set the remaining time to the time limit
     startTime = performance.now(); // Record the start time
     timerInterval = requestAnimationFrame(updateTimer); // Use requestAnimationFrame for smooth updates
 }
 
 function updateTimer() {
+    if(gameOver) return; // Stop updating if the game is over
+    console.log("Updating timer...");
     const elapsedTime = performance.now() - startTime; // Calculate the elapsed time in milliseconds
     remainingTime = timeLimit - elapsedTime; // Calculate the remaining time
 
     if (remainingTime <= 0) {
         remainingTime = 0; // Make sure time doesn't go negative
-        clearInterval(timerInterval); // Stop the timer
+        cancelAnimationFrame(timerInterval);
         handleTimeout(); // Handle timeout when the timer reaches 0
     }
 
@@ -62,11 +64,17 @@ function updateTimer() {
 }
 
 function handleTimeout() {
+    console.log("CALLING HANDLETIMEOUT!"); // Optional: Log timeout message
     tempHealth--; // Decrease health
     updateHealth(); // Update health display
     if (tempHealth > 0) {
         generateSequence(); // Generate a new sequence if still alive
-    } 
+    } else{
+        if(!gameOver) { // Check if game over has already been triggered
+                gameOver = true; // Set the flag to true
+                endGame(); // Call endGame only once
+        }
+    }
 }
 
 function stopTimer() {
@@ -130,27 +138,35 @@ function updateHealth() {
     if (hearts[tempHealth]) {
         hearts[tempHealth].textContent = '🤍'; // Change only the last full heart to empty
     }
-    if (tempHealth <= 0) {
+    if (tempHealth <= 0 && !gameOver) {
+        gameOver = true; // Set the flag to true
         stopTimer(); // Stop the timer when health is 0
         endGame();
-        
+        console.log("Game Over!"); // Optional: Log game over message
     }
 }
 
 function updateCorrect(){
-    const currentArrow = sequence[userInput.length - 1]; // Get the correct arrow from the sequence
-    const allArrows = document.querySelectorAll('.arrows-to-press .arrow'); // Get all displayed arrows
-    const arrowToUpdate = Array.from(allArrows).find(arrow => arrow.alt === currentArrow); // Find the corresponding arrow in the DOM
+    const allArrows = document.querySelectorAll('.arrows-to-press .arrow-display');
+    const arrowToUpdate = allArrows[userInput.length - 1]; // Get the correct arrow
+
     if (arrowToUpdate) {
-        arrowToUpdate.classList.add('correct'); // Mark it as correct
+        const img = arrowToUpdate.querySelector('img');
+        img.src = '/greensword.png'; // Change the image source to a green sword for correct input
     }
-    console.log("Correct input UPDATE:", currentArrow);
+
+    console.log("Correct input UPDATE:", userInput[userInput.length - 1]);
 }
 function updateIncorrect() {
-    const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
-    if(allArrows[userInput.length - 1]) {
-        allArrows[userInput.length - 1].classList.add('incorrect'); // Add a class for incorrect arrows
+    const allArrows = document.querySelectorAll('.arrows-to-press .arrow-display');
+    const arrowToUpdate = allArrows[userInput.length - 1]; // Get the correct arrow
+
+    if (arrowToUpdate) {
+        const img = arrowToUpdate.querySelector('img');
+        img.src = '/redsword.png'; // Change the image source to a green sword for correct input
     }
+
+    console.log("inorrect input UPDATE:", userInput[userInput.length - 1]);
 }
 // Get the corresponding arrow symbol for display
 function getArrowText(key) {
@@ -208,7 +224,7 @@ function checkInput() {
             document.getElementById('current-round').textContent = round;
 
             // Generate a new sequence
-            clearInterval(timer); // Stop the timer
+            cancelAnimationFrame(timerInterval);
             stopTimer(); // Stop the timer
             timeRemaining = timeLimit; // Reset time remaining for the next round
             generateSequence(); // Generate the next sequence
@@ -241,13 +257,8 @@ function generateNewSequence() {
 
 // Function to update the scores
 function updateScore(player) {
-    if (player === 'user') {
-        userScore++;
-        userScoreElement.textContent = userScore;
-    } else if (player === 'opponent') {
-        opponentScore++;
-        opponentScoreElement.textContent = opponentScore;
-    }
+    userScore++;
+    userScoreElement.textContent = userScore;
 }
 
 // Start the game by generating the first sequence
@@ -257,6 +268,7 @@ function startGame() {
 
 function endGame() {
     console.log("endGame called");
+    stopTimer();
         // Show "Status" after the last input
         const statusElement = document.createElement('h2');
         statusElement.textContent = 'Game Over'; // Set text of h2
@@ -276,12 +288,11 @@ function endGame() {
 
 function resetGame() {
     userScore = 0;
-    opponentScore = 0;
     round = 1;
     userHealth = 3; // Reset user's health
     tempHealth = 3; // Reset temporary health
+    gameOver = false; // Reset game over flag
     userScoreElement.textContent = userScore;
-    opponentScoreElement.textContent = opponentScore;
     document.getElementById('current-round').textContent = round;
     displayHealth(); // Display initial health
     generateSequence(); // Generate the first sequence

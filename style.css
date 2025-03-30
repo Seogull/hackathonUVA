@@ -14,6 +14,21 @@ body {
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
 }
+.up {
+    transform: rotate(0deg); /* No rotation for up */
+}
+
+.left {
+    transform: rotate(-90deg); /* Rotate 90 degrees counterclockwise for left */
+}
+
+.right {
+    transform: rotate(90deg); /* Rotate 90 degrees clockwise for right */
+}
+
+.down {
+    transform: rotate(180deg); /* Rotate 180 degrees for down */
+}
 
 @keyframes rainbow {
     0%   { background-position: 0% 50%; }
