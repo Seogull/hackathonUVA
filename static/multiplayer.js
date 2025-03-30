@@ -69,13 +69,31 @@ function generateRandomCombo() {
 function displaySequence(seq) {
   const container = document.getElementById("arrows-to-press");
   container.innerHTML = "";
+
   seq.forEach(key => {
     const div = document.createElement("div");
     div.className = "arrow-display";
-    div.textContent = getArrowText(key);
+
+    const img = document.createElement("img");
+    img.src = getSwordImagePath(key);
+    img.alt = key;
+    img.style.width = "50px";  // Optional: control size
+    img.style.height = "50px";
+
+    div.appendChild(img);
     container.appendChild(div);
   });
 }
+function getSwordImagePath(key) {
+  switch (key) {
+    case "ArrowUp": return "/swordup.png";
+    case "ArrowDown": return "/sworddown.png";
+    case "ArrowLeft": return "/swordleft.png";
+    case "ArrowRight": return "/swordright.png";
+    default: return "";
+  }
+}
+
 
 function startCountdown(callback) {
   let countdown = 3;
