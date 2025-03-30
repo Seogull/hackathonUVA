@@ -1,6 +1,3 @@
-
-
-
 const userScoreElement = document.getElementById('user-score');
 const arrows = {
     ArrowUp: document.getElementById('up'),
@@ -26,7 +23,7 @@ let sequence = []; // Array to store the generated sequence of keys
 let userInput = []; // Array to store the user's input
 let lastKeyPressTime = null; // To track the last key press time
 let keyPressIntervals = []; // Array to store the intervals between key presses
-let curremtStreak = 0; // Current streak of correct inputs
+let currentStreak = 0; // Current streak of correct inputs
 let longestStreak = 0; // Longest streak of correct inputs
 
 // Generate a random sequence of arrow keys
@@ -401,7 +398,7 @@ function resetGame() {
     tempHealth = 3; // Reset temporary health
     gameOver = false; // Reset game over flag
     userScoreElement.textContent = userScore;
-    curremtStreak = 0; // Reset current streak
+    currentStreak = 0; // Reset current streak
     document.getElementById('current-round').textContent = round;
     displayHealth(); // Display initial health
     generateSequence(); // Generate the first sequence
