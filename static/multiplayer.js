@@ -1,3 +1,5 @@
+// multiplayer.js
+
 let players = ["player1", "player2"];
 let currentPlayerIndex = 0;
 let round = 1; // current round per player
@@ -35,7 +37,7 @@ function getArrowText(key) {
 
 function generateRandomCombo() {
   const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-  const combo = [];
+  let combo = [];
   for (let i = 0; i < 4; i++) {
     combo.push(keys[Math.floor(Math.random() * keys.length)]);
   }
@@ -71,7 +73,7 @@ function startCountdown(callback) {
 
 function nextTurn() {
   if (round > maxRounds) {
-    console.log("Round exceeds maxRounds, ending game"); // Debugging
+    console.log("Round exceeds maxRounds, ending game");
     return endGame();
   }
 
@@ -89,27 +91,25 @@ function nextTurn() {
 }
 
 function endGame() {
-  console.log("endGame called"); // Debugging
+  console.log("endGame called");
   const p1 = completionTimes.player1.reduce((a, b) => a + b, 0);
   const p2 = completionTimes.player2.reduce((a, b) => a + b, 0);
 
-  let result = `🏁 Game Over!<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
-  if (p1 < p2) result += "🏆 Winner: Player 1!";
-  else if (p2 < p1) result += "🏆 Winner: Player 2!";
-  else result += "🤝 It's a tie!";
+  let result = `Game Over🏁<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
+  if (p1 < p2) result += "Winner: Player 1🏆";
+  else if (p2 < p1) result += "Winner: Player 2🏆";
+  else result += "It's a tie🤝";
 
-  console.log("Result:", result); // Debugging
+  console.log("Result:", result);
   const finalResultDiv = document.getElementById("final-result");
   finalResultDiv.innerHTML = result;
-  finalResultDiv.style.display = "block"; // Ensure visibility
+  finalResultDiv.style.display = "block"; // Ensure result is visible
 
+  // Update scoreboard times
   document.getElementById("player1-time").textContent = p1.toFixed(2);
   document.getElementById("player2-time").textContent = p2.toFixed(2);
 
-  const playAgainContainer = document.getElementById("play-again-container");
-  playAgainContainer.style.display = "block"; // Ensure visibility
-  console.log("Play Again container display set to block"); // Debugging
-
+  // Stop listening to key presses
   window.removeEventListener("keydown", handleKeydown);
 }
 
@@ -144,13 +144,13 @@ function handleKeydown(e) {
       round++;
     }
 
-    console.log(`After turn: currentPlayerIndex=${currentPlayerIndex}, round=${round}`); // Debugging
+    console.log(`After turn: currentPlayerIndex=${currentPlayerIndex}, round=${round}`);
     setTimeout(nextTurn, 1500);
   }
 }
 
 function resetGame() {
-  console.log("resetGame called"); // Debugging
+  console.log("resetGame called");
   currentPlayerIndex = 0;
   round = 1;
   combo = [];
@@ -158,12 +158,14 @@ function resetGame() {
   completionTimes.player1 = [];
   completionTimes.player2 = [];
 
+  // Reset final result display
   document.getElementById("final-result").innerHTML = "";
-  document.getElementById("play-again-container").style.display = "none";
+  document.getElementById("final-result").style.display = "none";
   document.getElementById("player1-time").textContent = "0";
   document.getElementById("player2-time").textContent = "0";
   document.getElementById("output").textContent = "No key pressed";
 
+  // Restart game by re-adding the keydown listener and resetting display
   window.addEventListener("keydown", handleKeydown);
   updateDisplay();
   nextTurn();
@@ -171,7 +173,7 @@ function resetGame() {
 
 document.getElementById("play-again-btn").addEventListener("click", resetGame);
 
-// Start game
+// Start game on page load
 window.addEventListener("keydown", handleKeydown);
 updateDisplay();
 nextTurn();

@@ -5,8 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Multiplayer Arrow Game</title>
   <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* Fix the Play Again button to the top left so it’s always visible */
+    #play-again-container {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
+  <!-- Fixed Play Again Button in Top Left -->
+  <div id="play-again-container">
+    <button id="play-again-btn" style="
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      background-color: #2ecc71;
+      border: none;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;">
+      🔁 Play Again
+    </button>
+  </div>
+
   <!-- Scoreboard (Left Column) -->
   <div class="scoreboard">
     <div class="score">
@@ -15,6 +40,8 @@
     <div class="score">
       <h2>Player 2 Time: <span id="player2-time">0</span>s</h2>
     </div>
+    <!-- Final Result container added under Player 2 -->
+    <div class="score" id="final-result" style="display: none; margin-top: 10px;"></div>
   </div>
 
   <!-- Game Info (Top Center) -->
@@ -46,29 +73,9 @@
     <div class="sprite" id="sprite"></div>
   </div>
 
-  <!-- Final Result & Play Again (Bottom Middle) -->
-  <div id="final-footer" style="grid-column: 2 / 3; grid-row: 3 / 4; text-align: center;">
-    <div id="final-result" style="font-weight: bold; margin-top: 20px; display: none;"></div>
-    
-    <!-- ✅ Button is hidden initially, shown only at the end -->
-    <div id="play-again-container" style="display: none; margin-top: 20px;">
-      <button id="play-again-btn" style="
-        padding: 12px 24px;
-        font-size: 18px;
-        border-radius: 8px;
-        background-color: #2ecc71;
-        border: none;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        transition: transform 0.2s ease;">
-        🔁 Play Again
-      </button>
-    </div>
-  </div>
-
   <script src="../static/multiplayer.js" defer></script>
 </body>
 </html>
+
 
 
