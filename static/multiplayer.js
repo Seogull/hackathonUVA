@@ -1,10 +1,11 @@
 let players = ["player1", "player2"];
 let currentPlayerIndex = 0;
-let round = 1;
-const maxRounds = 3;
+let round = 1; // current round per player
+const maxRounds = 3; // number of rounds per player
 let combo = [];
 let userInput = [];
 let startTime;
+let acceptingInput = false; // flag to control when key presses are accepted
 
 const completionTimes = {
   player1: [],
@@ -12,7 +13,7 @@ const completionTimes = {
 };
 
 function getCurrentPlayer() {
-  return players[currentPlayerIndex % 2];
+  return players[currentPlayerIndex % players.length];
 }
 
 function updateDisplay() {
@@ -69,20 +70,26 @@ function startCountdown(callback) {
 }
 
 function nextTurn() {
-  if (round > maxRounds) return endGame();
+  if (round > maxRounds) {
+    console.log("Round exceeds maxRounds, ending game"); // Debugging
+    return endGame();
+  }
 
   updateDisplay();
   combo = generateRandomCombo();
   userInput = [];
+  acceptingInput = false; // disable input until combo is shown
 
   startCountdown(() => {
     displaySequence(combo);
     document.getElementById("combo-entry-status").textContent = "🎯 Memorize and repeat the combo!";
     startTime = Date.now();
+    acceptingInput = true; // enable input after combo is displayed
   });
 }
 
 function endGame() {
+  console.log("endGame called"); // Debugging
   const p1 = completionTimes.player1.reduce((a, b) => a + b, 0);
   const p2 = completionTimes.player2.reduce((a, b) => a + b, 0);
 
@@ -91,24 +98,34 @@ function endGame() {
   else if (p2 < p1) result += "🏆 Winner: Player 2!";
   else result += "🤝 It's a tie!";
 
-  document.getElementById("final-result").innerHTML = result;
+  console.log("Result:", result); // Debugging
+  const finalResultDiv = document.getElementById("final-result");
+  finalResultDiv.innerHTML = result;
+  finalResultDiv.style.display = "block"; // Ensure visibility
+
   document.getElementById("player1-time").textContent = p1.toFixed(2);
   document.getElementById("player2-time").textContent = p2.toFixed(2);
 
-  document.getElementById("play-again-container").style.display = "block";
+  const playAgainContainer = document.getElementById("play-again-container");
+  playAgainContainer.style.display = "block"; // Ensure visibility
+  console.log("Play Again container display set to block"); // Debugging
 
   window.removeEventListener("keydown", handleKeydown);
 }
 
 function handleKeydown(e) {
+  if (!acceptingInput) return; // ignore key presses if not accepting input
+
   const key = e.key;
   if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) return;
 
   document.getElementById("output").textContent = `You pressed: ${getArrowText(key)}`;
   userInput.push(key);
+  // Display the user's input (this overwrites the generated combo display)
   displaySequence(userInput);
 
   if (userInput.length === 4) {
+    acceptingInput = false; // disable further input
     const end = Date.now();
     const timeTaken = ((end - startTime) / 1000).toFixed(2);
 
@@ -116,17 +133,24 @@ function handleKeydown(e) {
       document.getElementById("combo-entry-status").textContent = `✅ Correct! Time: ${timeTaken}s`;
       completionTimes[getCurrentPlayer()].push(parseFloat(timeTaken));
     } else {
-      document.getElementById("combo-entry-status").textContent = `❌ Wrong combo. +5s penalty.`;
+      document.getElementById("combo-entry-status").textContent = "❌ Wrong combo. +5s penalty.";
       completionTimes[getCurrentPlayer()].push(5.0);
     }
 
-    round++;
+    // Increment turn: every key press turn increments the currentPlayerIndex.
     currentPlayerIndex++;
+    // Increment round only after both players have taken their turn.
+    if (currentPlayerIndex % players.length === 0) {
+      round++;
+    }
+
+    console.log(`After turn: currentPlayerIndex=${currentPlayerIndex}, round=${round}`); // Debugging
     setTimeout(nextTurn, 1500);
   }
 }
 
 function resetGame() {
+  console.log("resetGame called"); // Debugging
   currentPlayerIndex = 0;
   round = 1;
   combo = [];
