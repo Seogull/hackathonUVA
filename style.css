@@ -8,7 +8,7 @@ body {
     animation: rainbow 10s linear infinite;
     font-family: Arial, sans-serif;
     overflow: hidden;
-    background-image: url('background_main_menu.png');
+    background-image: url('battle_arena.png');
     background-size: cover; /* Ensures the image covers the entire background */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
