@@ -115,7 +115,7 @@ function getMostMissedArrowText(player) {
   }
 
   if (mostMissedCount > 0) {
-    return `⚠️ Most missed arrow: ${getArrowText(mostMissed)} (${mostMissedCount} times)`;
+    return ` Most missed arrow: ${getArrowText(mostMissed)} (${mostMissedCount} times)⚠️`;
   } else {
     return `✅ No arrows missed!`;
   }
@@ -136,7 +136,6 @@ function endGame() {
 
   result += `<br><br>Player 1 Most Missed: ${p1Miss}`;
   result += `<br>Player 2 Most Missed: ${p2Miss}`;
-
 
 
   console.log("Result:", result);
