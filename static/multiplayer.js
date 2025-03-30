@@ -95,10 +95,10 @@ function endGame() {
   const p1 = completionTimes.player1.reduce((a, b) => a + b, 0);
   const p2 = completionTimes.player2.reduce((a, b) => a + b, 0);
 
-  let result = `🏁 Game Over!<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
-  if (p1 < p2) result += "🏆 Winner: Player 1!";
-  else if (p2 < p1) result += "🏆 Winner: Player 2!";
-  else result += "🤝 It's a tie!";
+  let result = `Game Over🏁<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
+  if (p1 < p2) result += "Winner: Player 1🏆";
+  else if (p2 < p1) result += "Winner: Player 2🏆";
+  else result += "It's a tie🤝";
 
   console.log("Result:", result);
   const finalResultDiv = document.getElementById("final-result");
