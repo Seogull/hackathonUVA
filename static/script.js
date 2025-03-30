@@ -12,6 +12,12 @@ let opponentScore = 0;
 let round = 1;
 let userHealth = 3; // User's health
 let tempHealth = 3; 
+let timer;
+let timeLimit = 10 * 1000;
+let startTime; // To track the start time
+let elapsedTime = 0; // To store the elapsed time
+let timerInterval;
+let timeRemaining = timeLimit; // Time limit for each round
 let sequence = [];
 let userInput = [];
 
@@ -25,8 +31,48 @@ function generateSequence() {
     }
     console.log("Generated sequence:", sequence);
     displaySequence(); // Display the sequence after generating it
+    startTimer(); // Start the timer for the round
 }
 
+
+function startTimer() {
+    remainingTime = timeLimit; // Set the remaining time to the time limit
+    startTime = performance.now(); // Record the start time
+    timerInterval = requestAnimationFrame(updateTimer); // Use requestAnimationFrame for smooth updates
+}
+
+function updateTimer() {
+    const elapsedTime = performance.now() - startTime; // Calculate the elapsed time in milliseconds
+    remainingTime = timeLimit - elapsedTime; // Calculate the remaining time
+
+    if (remainingTime <= 0) {
+        remainingTime = 0; // Make sure time doesn't go negative
+        clearInterval(timerInterval); // Stop the timer
+        handleTimeout(); // Handle timeout when the timer reaches 0
+    }
+
+    const timerDisplay = document.getElementById('timer'); // Assuming there's a div with id 'timer' to show the time
+    const timeInSeconds = (remainingTime / 1000).toFixed(3); // Convert milliseconds to seconds and round to 3 decimal places
+    timerDisplay.textContent = `Time: ${timeInSeconds}s`; // Update the timer display
+
+    // Continue updating the timer if the remaining time is greater than 0
+    if (remainingTime > 0) {
+        timerInterval = requestAnimationFrame(updateTimer); // Continue updating the timer
+    }
+}
+
+function handleTimeout() {
+    tempHealth--; // Decrease health
+    updateHealth(); // Update health display
+    if (tempHealth > 0) {
+        generateSequence(); // Generate a new sequence if still alive
+    } 
+}
+
+function stopTimer() {
+    cancelAnimationFrame(timerInterval); // Stop the ongoing timer
+    console.log('Timer stopped');
+}
 
 // Display the sequence on the screen
 function displaySequence() {
@@ -35,13 +81,28 @@ function displaySequence() {
 
     // Loop through the sequence and display each arrow
     sequence.forEach(key => {
-        const arrowDiv = document.createElement('div');
-        arrowDiv.classList.add('arrow');
-        arrowDiv.textContent = getArrowText(key);
-        sequenceContainer.appendChild(arrowDiv);
+        const div = document.createElement("div");
+        div.className = "arrow-display";
+    
+        const img = document.createElement("img");
+        img.src = getSwordImagePath(key);
+        img.alt = key;
+        img.style.width = "50px";  // Optional: control size
+        img.style.height = "50px";
+        div.appendChild(img);
+        sequenceContainer.appendChild(div);
     });
+    //startTimer(); // Start the timer when displaying the sequence
 }
-
+function getSwordImagePath(key) {
+    switch (key) {
+      case "ArrowUp": return "/swordup.png";
+      case "ArrowDown": return "/sworddown.png";
+      case "ArrowLeft": return "/swordleft.png";
+      case "ArrowRight": return "/swordright.png";
+      default: return "";
+    }
+}
 
 function displayHealth() {
     const healthContainer = document.getElementById('health-display');
@@ -70,17 +131,20 @@ function updateHealth() {
         hearts[tempHealth].textContent = '🤍'; // Change only the last full heart to empty
     }
     if (tempHealth <= 0) {
+        stopTimer(); // Stop the timer when health is 0
         endGame();
+        
     }
 }
 
 function updateCorrect(){
-    const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
-    console.log("last:", allArrows[allArrows.length - 1]);
-    console.log("userInput:", allArrows[userInput.length - 1]);
-    allArrows[userInput.length - 1].classList.add('correct'); // Add a class for correct arrows
-
-    console.log("Correct input UPDATE:", userInput[userInput.length - 1]);
+    const currentArrow = sequence[userInput.length - 1]; // Get the correct arrow from the sequence
+    const allArrows = document.querySelectorAll('.arrows-to-press .arrow'); // Get all displayed arrows
+    const arrowToUpdate = Array.from(allArrows).find(arrow => arrow.alt === currentArrow); // Find the corresponding arrow in the DOM
+    if (arrowToUpdate) {
+        arrowToUpdate.classList.add('correct'); // Mark it as correct
+    }
+    console.log("Correct input UPDATE:", currentArrow);
 }
 function updateIncorrect() {
     const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
@@ -144,8 +208,12 @@ function checkInput() {
             document.getElementById('current-round').textContent = round;
 
             // Generate a new sequence
+            clearInterval(timer); // Stop the timer
+            stopTimer(); // Stop the timer
+            timeRemaining = timeLimit; // Reset time remaining for the next round
             generateSequence(); // Generate the next sequence
         }, 1000); // 1 second delay before generating new sequence
+        
     }
 }
 
