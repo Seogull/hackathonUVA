@@ -41,7 +41,7 @@
   </div>
 
   <div class="game-info">
-    <h1>Multiplayer Sword Swarm</h1>
+    <h1>Multiplayer Sword Swarm← ↑ ↓ →</h1>
     <div id="game-round">Round 1</div>
     <div id="player-turn">Player 1's turn: Repeat the combo</div>
     <div id="combo-entry-status">🎯 Memorize and repeat the combo!</div>
@@ -73,7 +73,24 @@
     <div id="output">No key pressed</div>
     <div class="sprite" id="sprite"></div>
   </div>
-
+  <div id="go-back-container" style="
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;">
+  <button onclick="window.location.href='menu.html'" style="
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;">
+    ⏪ Go Back
+  </button>
+</div>
   <script src="../static/multiplayer.js" defer></script>
 </body>
 </html>
