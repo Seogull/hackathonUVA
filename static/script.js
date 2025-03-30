@@ -27,7 +27,7 @@ function generateSequence() {
     const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
     sequence = [];
     userInput = [];
-    for (let i = 0; i < round + 2; i++) { // Increase sequence length with each round
+    for (let i = 0; i < Math.min(round + 2, 12); i++) { // Increase sequence length with each round
         sequence.push(keys[Math.floor(Math.random() * keys.length)]);
     }
     console.log("Generated sequence:", sequence);
