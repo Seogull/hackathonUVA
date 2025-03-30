@@ -15,6 +15,16 @@ body {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
 }
+
+.correct {
+    background-color: limegreen !important;
+    transition: background-color 0.3s ease;
+}
+
+.incorrect {
+    background-color: red !important;
+    transition: background-color 0.3s ease;
+}
 .hearts-container {
     display: flex;
     justify-content: center;

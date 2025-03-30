@@ -42,6 +42,7 @@ function displaySequence() {
     });
 }
 
+
 function displayHealth() {
     const healthContainer = document.getElementById('health-display');
     healthContainer.innerHTML = ''; // Clear any previous hearts
@@ -64,15 +65,28 @@ function displayHealth() {
 }
 
 function updateHealth() {
-    tempHealth--; // Decrease health by 1
-    displayHealth(); // Update the health display
-
-    if (userHealth <= 0) {
+    const hearts = document.querySelectorAll('.heart'); 
+    if (hearts[tempHealth]) {
+        hearts[tempHealth].textContent = '🤍'; // Change only the last full heart to empty
+    }
+    if (tempHealth <= 0) {
         alert("Game Over! Your score: " + userScore);
         resetGame();
     }
 }
 
+function updateCorrect(){
+    const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
+    if(allArrows[userInput.length - 1]) {
+        allArrows[userInput.length - 1].classList.add('correct'); // Add a class for correct arrows
+    }
+}
+function updateIncorrect() {
+    const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
+    if(allArrows[userInput.length - 1]) {
+        allArrows[userInput.length - 1].classList.add('incorrect'); // Add a class for incorrect arrows
+    }
+}
 // Get the corresponding arrow symbol for display
 function getArrowText(key) {
     switch(key) {
@@ -86,23 +100,36 @@ function getArrowText(key) {
 
 // Check the user's input after each key press
 function checkInput() {
-    if (userInput.length <= sequence.length) {
-        if (userInput[userInput.length - 1] !== sequence[userInput.length - 1]) {
-            // Incorrect input
-            alert("Incorrect! Try again.");
-            updateHealth(); // Decrease health
-            userInput = [];  // Reset input and restart the sequence
-            generateSequence(); // Generate a new sequence
+    let currentIndex = userInput.length - 1;
+
+    if (userInput[currentIndex] !== sequence[currentIndex]) {
+        // Incorrect input, but allow the user to continue
+        alert("Incorrect! Try the next one.");
+        updateIncorrect(); // Update the display for incorrect inputs
+        tempHealth--; // Optional: Reduce health if tracking lives
+        updateHealth(); // Update health display
+
+        if (tempHealth <= 0) {
+            alert("Game Over!");
+            resetGame();
             return;
-        } else if (userInput.length === sequence.length) {
-            // Correct input
-            userScore++;
-            userScoreElement.textContent = userScore;
-            alert("Correct! New sequence.");
-            round++;  // Increase the round number
-            document.getElementById('current-round').textContent = round;
-            generateSequence(); // Generate a new sequence for the next round
         }
+    }
+
+    if (userInput[currentIndex] === sequence[currentIndex]) {
+        updateCorrect(); // Update the display for correct inputs
+        
+    }
+    // Check if the user has completed the sequence correctly
+
+    // If the user completes the full sequence correctly
+    if (userInput.length === sequence.length) {
+        userScore++;
+        userScoreElement.textContent = userScore;
+        alert("Correct! New sequence.");
+        round++;  // Increase the round number
+        document.getElementById('current-round').textContent = round;
+        generateSequence(); // Generate a new sequence for the next round
     }
 }
 const outputDiv = document.getElementById('output');
@@ -160,6 +187,20 @@ function updateScore(player) {
 function startGame() {
     generateSequence();
 }
+
+function resetGame() {
+    userScore = 0;
+    opponentScore = 0;
+    round = 1;
+    userHealth = 3; // Reset user's health
+    tempHealth = 3; // Reset temporary health
+    userScoreElement.textContent = userScore;
+    opponentScoreElement.textContent = opponentScore;
+    document.getElementById('current-round').textContent = round;
+    displayHealth(); // Display initial health
+    generateSequence(); // Generate the first sequence
+}
+
 
 // Start the game
 startGame();
