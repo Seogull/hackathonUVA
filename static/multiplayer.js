@@ -1,5 +1,3 @@
-// Multiplayer Arrow Game - Combined Keydown Version
-
 let players = ["player1", "player2"];
 let currentPlayerIndex = 0;
 let round = 1;
@@ -8,13 +6,6 @@ let combo = [];
 let userInput = [];
 let startTime;
 let acceptingInput = false;
-
-const arrows = {
-  ArrowUp: document.getElementById('up'),
-  ArrowDown: document.getElementById('down'),
-  ArrowLeft: document.getElementById('left'),
-  ArrowRight: document.getElementById('right')
-};
 
 const completionTimes = {
   player1: [],
@@ -57,6 +48,16 @@ function getArrowText(key) {
   }
 }
 
+function getSwordImagePath(key) {
+  switch (key) {
+    case "ArrowUp": return "/swordup.png";
+    case "ArrowDown": return "/sworddown.png";
+    case "ArrowLeft": return "/swordleft.png";
+    case "ArrowRight": return "/swordright.png";
+    default: return "";
+  }
+}
+
 function generateRandomCombo() {
   const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
   let combo = [];
@@ -77,21 +78,12 @@ function displaySequence(seq) {
     const img = document.createElement("img");
     img.src = getSwordImagePath(key);
     img.alt = key;
-    img.style.width = "50px";  
+    img.style.width = "50px";
     img.style.height = "50px";
 
     div.appendChild(img);
     container.appendChild(div);
   });
-}
-function getSwordImagePath(key) {
-  switch (key) {
-    case "ArrowUp": return "/swordup.png";
-    case "ArrowDown": return "/sworddown.png";
-    case "ArrowLeft": return "/swordleft.png";
-    case "ArrowRight": return "/swordright.png";
-    default: return "";
-  }
 }
 
 function startCountdown(callback) {
@@ -112,6 +104,7 @@ function startCountdown(callback) {
 
 function nextTurn() {
   if (round > maxRounds) {
+    console.log("Round exceeds maxRounds, ending game");
     return endGame();
   }
 
@@ -140,17 +133,18 @@ function getMostMissedArrowText(player) {
   }
 
   if (mostMissedCount > 0) {
-    return ` Most missed sword: ${getArrowText(mostMissed)} (${mostMissedCount} times)⚠️`;
+    return ` Most missed arrow: ${getArrowText(mostMissed)} (${mostMissedCount} times)⚠️`;
   } else {
-    return ` No swords missed!✅`;
+    return `✅ No arrows missed!`;
   }
 }
 
 function endGame() {
+  console.log("endGame called");
   const p1 = completionTimes.player1.reduce((a, b) => a + b, 0);
   const p2 = completionTimes.player2.reduce((a, b) => a + b, 0);
 
-  let result = `Game Over🏑<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
+  let result = `Game Over🏁<br>Player 1: ${p1.toFixed(2)}s<br>Player 2: ${p2.toFixed(2)}s<br>`;
   if (p1 < p2) result += "Winner: Player 1🏆";
   else if (p2 < p1) result += "Winner: Player 2🏆";
   else result += "It's a tie🤝";
@@ -165,22 +159,16 @@ function endGame() {
   document.getElementById("player1-time").textContent = p1.toFixed(2);
   document.getElementById("player2-time").textContent = p2.toFixed(2);
 
-  window.removeEventListener("keydown", combinedKeydown);
+  window.removeEventListener("keydown", handleKeydown);
 }
 
-function combinedKeydown(e) {
+function handleKeydown(e) {
   if (!acceptingInput) return;
 
   const key = e.key;
   if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) return;
 
-  if (arrows[key]) {
-    arrows[key].classList.add("pressed");
-    setTimeout(() => {
-      arrows[key].classList.remove("pressed");
-    }, 50);
-  }
-
+  document.getElementById("output").textContent = `You pressed: ${getArrowText(key)}`;
   userInput.push(key);
   displaySequence(userInput);
 
@@ -190,7 +178,7 @@ function combinedKeydown(e) {
     const timeTaken = ((end - startTime) / 1000).toFixed(2);
 
     const currentPlayer = getCurrentPlayer();
-    
+
     if (userInput.join() === combo.join()) {
       document.getElementById("combo-entry-status").textContent = `✅ Correct! Time: ${timeTaken}s`;
       completionTimes[currentPlayer].push(parseFloat(timeTaken));
@@ -204,6 +192,7 @@ function combinedKeydown(e) {
         }
       }
     }
+
     const totalTime = completionTimes[currentPlayer].reduce((a, b) => a + b, 0).toFixed(2);
     document.getElementById(`${currentPlayer}-time`).textContent = totalTime;
 
@@ -212,23 +201,21 @@ function combinedKeydown(e) {
       round++;
     }
 
+    console.log(`After turn: currentPlayerIndex=${currentPlayerIndex}, round=${round}`);
     setTimeout(nextTurn, 1500);
   }
 }
 
 function resetGame() {
+  console.log("resetGame called");
   currentPlayerIndex = 0;
   round = 1;
   combo = [];
   userInput = [];
+  acceptingInput = false;
+
   completionTimes.player1 = [];
   completionTimes.player2 = [];
-
-  document.getElementById("final-result").innerHTML = "";
-  document.getElementById("final-result").style.display = "none";
-  document.getElementById("player1-time").textContent = "0";
-  document.getElementById("player2-time").textContent = "0";
-  document.getElementById("output").textContent = "No key pressed";
 
   for (let player of players) {
     for (let key in missedArrowsPerPlayer[player]) {
@@ -236,13 +223,20 @@ function resetGame() {
     }
   }
 
-  window.addEventListener("keydown", combinedKeydown);
+  document.getElementById("final-result").innerHTML = "";
+  document.getElementById("final-result").style.display = "none";
+  document.getElementById("player1-time").textContent = "0";
+  document.getElementById("player2-time").textContent = "0";
+  document.getElementById("output").textContent = "No key pressed";
+
+  window.addEventListener("keydown", handleKeydown);
   updateDisplay();
   nextTurn();
 }
 
 document.getElementById("play-again-btn").addEventListener("click", resetGame);
 
-window.addEventListener("keydown", combinedKeydown);
+// Start game on page load
+window.addEventListener("keydown", handleKeydown);
 updateDisplay();
 nextTurn();
