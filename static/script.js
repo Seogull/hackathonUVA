@@ -207,13 +207,10 @@ function checkInput() {
         
         // Find the container where you want to insert the new element
         const gameInfoContainer = document.querySelector('.game-info');
-        
-        // Find the element you want to insert before
         const arrowsContainer = document.querySelector('.arrows-to-press');
         
-        // Insert the status element before the arrows container
-        gameInfoContainer.insertBefore(statusElement, arrowsContainer);
-
+        // Insert the status element AFTER the arrows container
+        gameInfoContainer.appendChild(statusElement);
         // Delay before generating a new sequence
         setTimeout(() => {
             // Remove the "Status" message before generating a new sequence

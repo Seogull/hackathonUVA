@@ -3,85 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arrow Key Game</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Main Menu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url(/background_main_menu.png); /* Adjust the path as needed */
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .menu-container {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .menu-container img {
+            max-width: 100%;
+            height: auto;
+            margin-right: 20px;
+            max-width: 700px;
+        }
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        .menu-buttons button {
+            display: block;
+            width: 200px;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 18px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .menu-buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="scoreboard">
-        <div class="score">
-            <h2>User Score: <span id="user-score">0</span></h2>
-            <h2>High Score: <span id="high-score">0</span></h2>
+    <div class="menu-container">
+        <img src="/title sword.png" alt="Game Title">
+        <div class="menu-buttons">
+            <button onclick="window.location.href='freeplay.html';">FREE PLAY</button>
+            <button onclick="window.location.href='multiplayer.html';">MULTIPLAYER</button>
+            <button onclick="window.location.href='tutorial.html';">TUTORIAL</button>
         </div>
     </div>
-
-    <div class="game-info">
-        <h1>Round: <span id="current-round">1</span> .... <span id ="timer">0.00</span></h1>
-        <div class="arrows-to-press" id="arrows-to-press"></div>
-    </div>
-
-  <!-- Arrows Grid (Center) -->
-  <div class="container">
-    <div class="empty"></div>
-    <div class="arrow" id="up">
-        <img src="/swordup.png" alt="Up Arrow" class="arrow-img up">
-    </div>
-    <div class="empty"></div>
-    <div class="arrow" id="left">
-        <img src="/swordup.png" alt="Left Arrow" class="arrow-img left">
-    </div>
-    <div class="empty"></div>
-    <div class="arrow" id="right">
-        <img src="/swordup.png" alt="Right Arrow" class="arrow-img right">
-    </div>
-    <div class="empty"></div>
-    <div class="arrow" id="down">
-        <img src="/swordup.png" alt="Down Arrow" class="arrow-img down">
-    </div>
-    <div class="empty"></div>
-</div>
-
-    <div class="sprite-container">
-        <h1>Health</h1>
-        <div id="health-display" class="hearts-container"></div>
-    </div>
-
-      <!-- Fixed Play Again Button in Top Left -->
-
-    <button Play
-    id="play-again-btn" style="
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 8px;
-      background-color: #2ecc71;
-      border: none;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      position: fixed; /* Fix it in place on the screen */
-    bottom: 110px; /* Distance from the bottom */
-    left: 20px; /* Distance from the left */
-      transition: transform 0.2s ease;">
-      Play
-    </button>
-    <div id="go-back-container" style="
-    position: fixed;
-    bottom: 20px;
-    left: 200px;
-    z-index: 1000;">
-    <button onclick="window.location.href='menu.html'" style="
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 8px;
-      background-color: #3498db;
-      border: none;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease;">
-      ⏪ Go Back
-    </button>
-  </div>
-
-    <script src="/static/script.js" defer></script>
 </body>
+
 </html>

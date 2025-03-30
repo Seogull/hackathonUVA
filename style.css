@@ -90,7 +90,7 @@ body {
     left: 20px; /* Ensures a 20px gap from the left */
     right: 20px; /* Ensures a 20px gap from the right */
     width: calc(100% - 40px); /* Takes up the entire width minus the 20px padding on both sides */
- 
+    min-height: 300px;
     max-width: 1200px; /* Prevent it from getting too large */
     min-width: 500px; /* Prevent it from becoming too small */
     padding: 20px;
