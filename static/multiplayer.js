@@ -77,7 +77,7 @@ function displaySequence(seq) {
     const img = document.createElement("img");
     img.src = getSwordImagePath(key);
     img.alt = key;
-    img.style.width = "50px";  // Optional: control size
+    img.style.width = "50px";  
     img.style.height = "50px";
 
     div.appendChild(img);
@@ -93,7 +93,6 @@ function getSwordImagePath(key) {
     default: return "";
   }
 }
-
 
 function startCountdown(callback) {
   let countdown = 3;

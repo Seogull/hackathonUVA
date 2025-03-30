@@ -6,7 +6,6 @@
   <title>Multiplayer Arrow Game</title>
   <link rel="stylesheet" href="../multi_style.css" />
   <style>
-    /* Fix the Play Again button to the top left so it’s always visible */
     #play-again-container {
       position: fixed;
       top: 10px;
@@ -16,7 +15,6 @@
   </style>
 </head>
 <body>
-  <!-- Fixed Play Again Button in Top Left -->
   <div id="play-again-container">
     <button id="play-again-btn" style="
       padding: 12px 24px;
@@ -32,7 +30,6 @@
     </button>
   </div>
 
-  <!-- Scoreboard (Left Column) -->
   <div class="scoreboard">
     <div class="score">
       <h2>Player 1 Time: <span id="player1-time">0</span>s</h2>
@@ -40,20 +37,17 @@
     <div class="score">
       <h2>Player 2 Time: <span id="player2-time">0</span>s</h2>
     </div>
-    <!-- Final Result container added under Player 2 -->
     <div class="score" id="final-result" style="display: none; margin-top: 10px;"></div>
   </div>
 
-  <!-- Game Info (Top Center) -->
   <div class="game-info">
-    <h1>Multiplayer Arrow Game</h1>
+    <h1>Multiplayer Sword Swarm</h1>
     <div id="game-round">Round 1</div>
     <div id="player-turn">Player 1's turn: Repeat the combo</div>
     <div id="combo-entry-status">🎯 Memorize and repeat the combo!</div>
     <div class="arrows-to-press" id="arrows-to-press"></div>
   </div>
 
-  <!-- Arrows Grid (Center) -->
   <div class="container">
     <div class="empty"></div>
     <div class="arrow" id="up">
@@ -74,7 +68,6 @@
     <div class="empty"></div>
   </div>
 
-  <!-- Keys Pressed & Sprite -->
   <div class="sprite-container">
     <h1>Keys Pressed</h1>
     <div id="output">No key pressed</div>
