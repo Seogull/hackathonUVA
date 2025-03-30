@@ -77,9 +77,11 @@ function updateHealth() {
 
 function updateCorrect(){
     const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
-    if(allArrows[userInput.length - 1]) {
-        allArrows[userInput.length - 1].classList.add('correct'); // Add a class for correct arrows
-    }
+    console.log("last:", allArrows[allArrows.length - 1]);
+    console.log("userInput:", allArrows[userInput.length - 1]);
+    allArrows[userInput.length - 1].classList.add('correct'); // Add a class for correct arrows
+
+    console.log("Correct input UPDATE:", userInput[userInput.length - 1]);
 }
 function updateIncorrect() {
     const allArrows = document.querySelectorAll('.arrows-to-press .arrow');
@@ -101,9 +103,12 @@ function getArrowText(key) {
 // Check the user's input after each key press
 function checkInput() {
     let currentIndex = userInput.length - 1;
-
+    if (currentIndex < 0 || currentIndex >= sequence.length) return;
+    console.log("User input:", userInput[currentIndex]); 
+    console.log("currentIndex:", currentIndex);
     if (userInput[currentIndex] !== sequence[currentIndex]) {
         // Incorrect input, but allow the user to continue
+        console.log("Incorrect input:", userInput[currentIndex]);
         alert("Incorrect! Try the next one.");
         updateIncorrect(); // Update the display for incorrect inputs
         tempHealth--; // Optional: Reduce health if tracking lives
@@ -114,46 +119,25 @@ function checkInput() {
             resetGame();
             return;
         }
-    }
-
-    if (userInput[currentIndex] === sequence[currentIndex]) {
+    } else {
+        console.log("Correct input:", userInput[currentIndex]);
         updateCorrect(); // Update the display for correct inputs
-        
     }
     // Check if the user has completed the sequence correctly
-
     // If the user completes the full sequence correctly
-    if (userInput.length === sequence.length) {
-        userScore++;
-        userScoreElement.textContent = userScore;
-        alert("Correct! New sequence.");
-        round++;  // Increase the round number
-        document.getElementById('current-round').textContent = round;
-        generateSequence(); // Generate a new sequence for the next round
-    }
+    // Delay before generating a new sequence
+    setTimeout(() => {
+        // Check if the user has completed the sequence correctly
+        if (userInput.length === sequence.length) {
+            userScore++;
+            userScoreElement.textContent = userScore;
+            alert("Correct! New sequence.");
+            round++;  // Increase the round number
+            document.getElementById('current-round').textContent = round;
+            generateSequence(); // Generate a new sequence for the next round
+        }
+    }, 1000); // 1000 milliseconds = 1 second
 }
-const outputDiv = document.getElementById('output');
-
-    window.addEventListener('keydown', (event) => {
-      let key = '';
-      switch (event.key) {
-        case 'ArrowUp':
-          key = 'Up Arrow';
-          break;
-        case 'ArrowDown':
-          key = 'Down Arrow';
-          break;
-        case 'ArrowLeft':
-          key = 'Left Arrow';
-          break;
-        case 'ArrowRight':
-          key = 'Right Arrow';
-          break;
-        default:
-          key = 'Not an arrow key';
-      }
-      outputDiv.textContent = `You pressed: ${key}`;
-    });
 
     // Listen for keydown events to capture user input
 window.addEventListener('keydown', (event) => {

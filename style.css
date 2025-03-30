@@ -1,15 +1,18 @@
 /* BODY & RAINBOW BACKGROUND */
 body {
     margin: 0;
-    height: 100%;
+    height: 100vh;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: auto 1fr;
-    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-    background-size: 400% 400%;
     animation: rainbow 10s linear infinite;
     font-family: Arial, sans-serif;
     overflow: hidden;
+    background-image: url('background_main_menu.png');
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    
 }
 
 @keyframes rainbow {
