@@ -7,6 +7,7 @@ const arrows = {
 };
 
 let userScore = 0;
+let highScore = 0; // Initialize high score
 let round = 1;
 let userHealth = 3; // User's health
 let tempHealth = 3; 
@@ -17,6 +18,7 @@ let elapsedTime = 0; // To store the elapsed time
 let timerInterval;
 let timeRemaining = timeLimit; // Time limit for each round
 let gameOver = false; // Flag to track if the game is over
+let gameStarted = false; // Flag to track if the game has started
 let sequence = [];
 let userInput = [];
 
@@ -263,7 +265,12 @@ function updateScore(player) {
 
 // Start the game by generating the first sequence
 function startGame() {
+    if (!gameStarted) {
+        document.getElementById("play-again-btn").textContent = "Play";
+        gameStarted = true; // Set flag to true after first play
+    }
     generateSequence();
+    displayHealth();
 }
 
 function endGame() {
@@ -284,6 +291,11 @@ function endGame() {
 
     // Stop listening to key presses
     stopListening();
+    if(userScore > highScore) {
+        highScore = userScore; // Update high score if current score is higher
+        const highScoreElement = document.getElementById('high-score');
+        highScoreElement.textContent = `${highScore}`; // Display new high score
+    }
   }
 
 function resetGame() {
@@ -302,12 +314,8 @@ function resetGame() {
     if (statusElement) {
         statusElement.remove();
     }
+    document.getElementById("play-again-btn").textContent = "Play Again";
 }
 document.getElementById("play-again-btn").addEventListener("click", resetGame);
 
 
-
-
-// Start the game
-startGame();
-displayHealth();

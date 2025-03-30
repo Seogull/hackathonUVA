@@ -10,6 +10,7 @@
     <div class="scoreboard">
         <div class="score">
             <h2>User Score: <span id="user-score">0</span></h2>
+            <h2>High Score: <span id="high-score">0</span></h2>
         </div>
     </div>
 
@@ -46,7 +47,7 @@
 
       <!-- Fixed Play Again Button in Top Left -->
 
-    <button 🔁 Play Again
+    <button Play
     id="play-again-btn" style="
       padding: 12px 24px;
       font-size: 18px;
@@ -60,9 +61,26 @@
     bottom: 110px; /* Distance from the bottom */
     left: 20px; /* Distance from the left */
       transition: transform 0.2s ease;">
-      🔁 Play Again
+      Play
     </button>
-
+    <div id="go-back-container" style="
+    position: fixed;
+    bottom: 20px;
+    left: 200px;
+    z-index: 1000;">
+    <button onclick="window.location.href='menu.html'" style="
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      background-color: #3498db;
+      border: none;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;">
+      ⏪ Go Back
+    </button>
+  </div>
 
     <script src="/static/script.js" defer></script>
 </body>
