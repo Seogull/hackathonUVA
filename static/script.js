@@ -21,13 +21,18 @@ let gameOver = false; // Flag to track if the game is over
 let gameStarted = false; // Flag to track if the game has started
 let sequence = [];
 let userInput = [];
+let lastKeyPressTime = null;
+let keyPressIntervals = [];
+let curremtStreak = 0;
+let longestStreak = 0;
 
 // Generate a random sequence of arrow keys
 function generateSequence() {
     const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
     sequence = [];
     userInput = [];
-    for (let i = 0; i < Math.min(round + 2, 12); i++) { // Increase sequence length with each round
+    startSequenceTimer()
+    for (let i = 0; i < Math.min(round + 3, 12); i++) { // Increase sequence length with each round
         sequence.push(keys[Math.floor(Math.random() * keys.length)]);
     }
     console.log("Generated sequence:", sequence);
@@ -170,38 +175,43 @@ function updateIncorrect() {
 
     console.log("inorrect input UPDATE:", userInput[userInput.length - 1]);
 }
-// Get the corresponding arrow symbol for display
-function getArrowText(key) {
-    switch(key) {
-        case "ArrowUp": return "↑";
-        case "ArrowDown": return "↓";
-        case "ArrowLeft": return "←";
-        case "ArrowRight": return "→";
-        default: return "";
-    }
-}
+
+let keyAccuracy = { ArrowUp: { correct: 0, total: 0 },
+                    ArrowDown: { correct: 0, total: 0 },
+                    ArrowLeft: { correct: 0, total: 0 },
+                    ArrowRight: { correct: 0, total: 0 } };
 
 // Check the user's input after each key press
 function checkInput() {
     let currentIndex = userInput.length - 1;
     if (currentIndex < 0 || currentIndex >= sequence.length) return;
-    console.log("User input:", userInput[currentIndex]); 
-    console.log("currentIndex:", currentIndex);
-    if (userInput[currentIndex] !== sequence[currentIndex]) {
+
+    let key = userInput[currentIndex];
+    keyAccuracy[key].total++; // Increment total presses
+
+    if (userInput[currentIndex] !== sequence[currentIndex] && userHealth !== 0) {
         // Incorrect input, but allow the user to continue
         console.log("Incorrect input:", userInput[currentIndex]);
         updateIncorrect(); // Update the display for incorrect inputs
         tempHealth--; // Optional: Reduce health if tracking lives
         updateHealth(); // Update health display
+        currentStreak = 0;
     } else {
         console.log("Correct input:", userInput[currentIndex]);
+        keyAccuracy[key].correct++; // Increment correct presses
         updateCorrect(); // Update the display for correct inputs
+
+        currentStreak++; // Increment the current streak
+        if (currentStreak > longestStreak) {
+            longestStreak = currentStreak; // Update the longest streak
+        }
     }
     // Check if the user has completed the sequence correctly
     // If the user completes the full sequence correctly
     // Delay before generating a new sequence
-    if (userInput.length === sequence.length) {
+    if (userInput.length === sequence.length && tempHealth !== 0) {
         // Show "Status" after the last input
+        endSequenceTimer();
         const statusElement = document.createElement('h2');
         statusElement.textContent = 'Complete'; // Set text of h2
         
@@ -235,6 +245,11 @@ function checkInput() {
     // Listen for keydown events to capture user input
 const keydownListener = (event) => {
     if (arrows[event.key]) {
+        const currentTime = performance.now();
+        if (lastKeyPressTime !== null) {
+            keyPressIntervals.push(currentTime - lastKeyPressTime);
+        }
+        lastKeyPressTime = currentTime;
         userInput.push(event.key);
         arrows[event.key].classList.add('pressed');
         setTimeout(() => {
@@ -270,6 +285,58 @@ function startGame() {
     displayHealth();
 }
 
+function getOverallAccuracy() {
+    let correctPresses = Object.values(keyAccuracy).reduce((sum, key) => sum + key.correct, 0);
+    let totalPresses = Object.values(keyAccuracy).reduce((sum, key) => sum + key.total, 0);
+    return totalPresses ? ((correctPresses / totalPresses) * 100).toFixed(2) + "%" : "0%";
+}
+
+let sequenceStartTime = 0;
+let sequenceTimes = [];
+
+function startSequenceTimer() {
+    sequenceStartTime = performance.now();
+}
+
+function endSequenceTimer() {
+    if (sequenceStartTime) {
+        let sequenceTime = performance.now() - sequenceStartTime;
+        sequenceTimes.push(sequenceTime);
+        sequenceStartTime = 0; // Reset for next sequence
+    }
+}
+
+function getAverageSequenceTime() {
+    if (sequenceTimes.length === 0) return "N/A";
+    let avgTime = sequenceTimes.reduce((a, b) => a + b, 0) / sequenceTimes.length;
+    return avgTime.toFixed(2) + "ms";
+}
+
+function getKeyAccuracyStats() {
+    let bestKey = null, worstKey = null;
+    let bestAccuracy = 0, worstAccuracy = 100;
+
+    for (const key in keyAccuracy) {
+        const { correct, total } = keyAccuracy[key];
+        let accuracy = total ? (correct / total) * 100 : 0;
+
+        if (accuracy > bestAccuracy) {
+            bestAccuracy = accuracy;
+            bestKey = key;
+        }
+
+        if (accuracy < worstAccuracy) {
+            worstAccuracy = accuracy;
+            worstKey = key;
+        }
+    }
+
+    return {
+        mostAccurate: bestKey ? `${bestKey} (${bestAccuracy.toFixed(2)}%)` : "N/A",
+        leastAccurate: worstKey ? `${worstKey} (${worstAccuracy.toFixed(2)}%)` : "N/A"
+    };
+}
+
 function endGame() {
     console.log("endGame called");
     stopTimer();
@@ -293,6 +360,35 @@ function endGame() {
         const highScoreElement = document.getElementById('high-score');
         highScoreElement.textContent = `${highScore}`; // Display new high score
     }
+    //STATISTICS 
+    // Calculate the average time between key presses
+    const waitingTime = (round - 1) * 1000; // Since we stall 1 second before each new round
+    const totalKeyPressTime = keyPressIntervals.reduce((a, b) => a + b, 0) - waitingTime;
+    const avgTimeBetweenPresses = keyPressIntervals.length
+        ? Math.max(totalKeyPressTime / keyPressIntervals.length, 0) // Ensure it doesn’t go negative
+        : 0;
+    console.log(`Average time between presses: ${avgTimeBetweenPresses.toFixed(2)}ms`);
+
+    //Key Press Accuracy
+    for (let key in keyAccuracy) {
+        let accuracy = (keyAccuracy[key].correct / keyAccuracy[key].total) * 100 || 0;
+        console.log(`${key} accuracy: ${accuracy.toFixed(2)}%`);
+        console.log(`Total ${key} presses: ${keyAccuracy[key].total}`);
+        console.log(`Correct ${key} presses: ${keyAccuracy[key].correct}`);
+    }
+
+    // Overall accuracy
+    const overallAccuracy = getOverallAccuracy();
+    console.log(`Overall accuracy: ${overallAccuracy}`);
+
+    //Overall sequence completion time
+    console.log("Average Time to Complete Sequence:", getAverageSequenceTime());
+
+    //Most and least accurate keys
+    console.log("Most & Least Accurate Key:", getKeyAccuracyStats());
+
+    //Longest streak
+    console.log("Longest streak:", longestStreak);
   }
 
 function resetGame() {
@@ -302,9 +398,17 @@ function resetGame() {
     tempHealth = 3; // Reset temporary health
     gameOver = false; // Reset game over flag
     userScoreElement.textContent = userScore;
+    curremtStreak = 0; // Reset current streak
     document.getElementById('current-round').textContent = round;
     displayHealth(); // Display initial health
     generateSequence(); // Generate the first sequence
+    keyAccuracy = {
+        ArrowUp: { correct: 0, total: 0 },
+        ArrowDown: { correct: 0, total: 0 },
+        ArrowLeft: { correct: 0, total: 0 },
+        ArrowRight: { correct: 0, total: 0 }
+    };
+
 
     window.addEventListener('keydown', keydownListener);
     const statusElement = document.querySelector('.game-info h2');
