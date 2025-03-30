@@ -70,8 +70,7 @@ function updateHealth() {
         hearts[tempHealth].textContent = '🤍'; // Change only the last full heart to empty
     }
     if (tempHealth <= 0) {
-        alert("Game Over! Your score: " + userScore);
-        resetGame();
+        endGame();
     }
 }
 
@@ -109,16 +108,9 @@ function checkInput() {
     if (userInput[currentIndex] !== sequence[currentIndex]) {
         // Incorrect input, but allow the user to continue
         console.log("Incorrect input:", userInput[currentIndex]);
-        alert("Incorrect! Try the next one.");
         updateIncorrect(); // Update the display for incorrect inputs
         tempHealth--; // Optional: Reduce health if tracking lives
         updateHealth(); // Update health display
-
-        if (tempHealth <= 0) {
-            alert("Game Over!");
-            resetGame();
-            return;
-        }
     } else {
         console.log("Correct input:", userInput[currentIndex]);
         updateCorrect(); // Update the display for correct inputs
@@ -126,21 +118,39 @@ function checkInput() {
     // Check if the user has completed the sequence correctly
     // If the user completes the full sequence correctly
     // Delay before generating a new sequence
-    setTimeout(() => {
-        // Check if the user has completed the sequence correctly
-        if (userInput.length === sequence.length) {
+    if (userInput.length === sequence.length) {
+        // Show "Status" after the last input
+        const statusElement = document.createElement('h2');
+        statusElement.textContent = 'Complete'; // Set text of h2
+        
+        // Find the container where you want to insert the new element
+        const gameInfoContainer = document.querySelector('.game-info');
+        
+        // Find the element you want to insert before
+        const arrowsContainer = document.querySelector('.arrows-to-press');
+        
+        // Insert the status element before the arrows container
+        gameInfoContainer.insertBefore(statusElement, arrowsContainer);
+
+        // Delay before generating a new sequence
+        setTimeout(() => {
+            // Remove the "Status" message before generating a new sequence
+            statusElement.remove();
+
+            // Update score and round
             userScore++;
             userScoreElement.textContent = userScore;
-            alert("Correct! New sequence.");
             round++;  // Increase the round number
             document.getElementById('current-round').textContent = round;
-            generateSequence(); // Generate a new sequence for the next round
-        }
-    }, 1000); // 1000 milliseconds = 1 second
+
+            // Generate a new sequence
+            generateSequence(); // Generate the next sequence
+        }, 1000); // 1 second delay before generating new sequence
+    }
 }
 
     // Listen for keydown events to capture user input
-window.addEventListener('keydown', (event) => {
+const keydownListener = (event) => {
     if (arrows[event.key]) {
         userInput.push(event.key);
         arrows[event.key].classList.add('pressed');
@@ -149,8 +159,13 @@ window.addEventListener('keydown', (event) => {
         }, 50);
         checkInput(); // Check input after each key press
     }
-});
+};
+window.addEventListener('keydown', keydownListener);
 
+function stopListening() {
+    window.removeEventListener('keydown', keydownListener);
+}
+    
 function generateNewSequence() {
     const directions = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     sequence.push(directions[Math.floor(Math.random() * directions.length)]);
@@ -171,6 +186,25 @@ function updateScore(player) {
 function startGame() {
     generateSequence();
 }
+
+function endGame() {
+    console.log("endGame called");
+        // Show "Status" after the last input
+        const statusElement = document.createElement('h2');
+        statusElement.textContent = 'Game Over'; // Set text of h2
+        
+        // Find the container where you want to insert the new element
+        const gameInfoContainer = document.querySelector('.game-info');
+        
+        // Find the element you want to insert before
+        const arrowsContainer = document.querySelector('.arrows-to-press');
+        
+        // Insert the status element before the arrows container
+        gameInfoContainer.insertBefore(statusElement, arrowsContainer);
+
+    // Stop listening to key presses
+    stopListening();
+  }
 
 function resetGame() {
     userScore = 0;
