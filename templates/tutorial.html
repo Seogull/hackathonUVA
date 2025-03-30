@@ -43,26 +43,28 @@
 <body>
     <div class="tutorial-container">
         <h1>Game Tutorial</h1>
-        <p>Use the arrow keys to control the sword's direction and click the corresponding swords from left to right:</p>
-        <ul>
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <p>Use the arrow keys to control the sword's direction and click the corresponding swords from left to right:</p>
+            <ul>
             <li><strong>Up Arrow:</strong> <img src="/swordup.png" alt="Sword Up" width="50"></li>
             <li><strong>Left Arrow:</strong> <img src="/swordleft.png" alt="Sword Left" width="50"></li>
             <li><strong>Right Arrow:</strong> <img src="/swordright.png" alt="Sword Right" width="50"></li>
             <li><strong>Down Arrow:</strong> <img src="/sworddown.png" alt="Sword Down" width="50"></li>
-        </ul>
+            </ul>
+        </div>
         <p>Get ready to master your sword skills!</p>
+        <button onclick="window.location.href='index.html'" style="
+        padding: 12px 24px;
+        font-size: 18px;
+        border-radius: 8px;
+        background-color: #3498db;
+        border: none;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease;">
+        ⏪ Go Back
+      </button>
     </div>
-    <button onclick="window.location.href='menu.html'" style="
-    padding: 12px 24px;
-    font-size: 18px;
-    border-radius: 8px;
-    background-color: #3498db;
-    border: none;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.2s ease;">
-    ⏪ Go Back
-  </button>
 </body>
 </html>

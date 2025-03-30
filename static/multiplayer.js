@@ -140,9 +140,9 @@ function getMostMissedArrowText(player) {
   }
 
   if (mostMissedCount > 0) {
-    return ` Most missed arrow: ${getArrowText(mostMissed)} (${mostMissedCount} times)⚠️`;
+    return ` Most missed sword: ${getArrowText(mostMissed)} (${mostMissedCount} times)⚠️`;
   } else {
-    return ` No arrows missed!✅`;
+    return ` No swords missed!✅`;
   }
 }
 
@@ -181,7 +181,6 @@ function combinedKeydown(e) {
     }, 50);
   }
 
-  document.getElementById("output").textContent = `You pressed: ${getArrowText(key)}`;
   userInput.push(key);
   displaySequence(userInput);
 
@@ -191,7 +190,7 @@ function combinedKeydown(e) {
     const timeTaken = ((end - startTime) / 1000).toFixed(2);
 
     const currentPlayer = getCurrentPlayer();
-
+    
     if (userInput.join() === combo.join()) {
       document.getElementById("combo-entry-status").textContent = `✅ Correct! Time: ${timeTaken}s`;
       completionTimes[currentPlayer].push(parseFloat(timeTaken));
@@ -205,6 +204,8 @@ function combinedKeydown(e) {
         }
       }
     }
+    const totalTime = completionTimes[currentPlayer].reduce((a, b) => a + b, 0).toFixed(2);
+    document.getElementById(`${currentPlayer}-time`).textContent = totalTime;
 
     currentPlayerIndex++;
     if (currentPlayerIndex % players.length === 0) {

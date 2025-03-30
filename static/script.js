@@ -1,3 +1,6 @@
+
+
+
 const userScoreElement = document.getElementById('user-score');
 const arrows = {
     ArrowUp: document.getElementById('up'),
@@ -6,25 +9,25 @@ const arrows = {
     ArrowRight: document.getElementById('right')
 };
 
-let userScore = 0;
+let userScore = 0; // Initialize user score
 let highScore = 0; // Initialize high score
-let round = 1;
+let round = 1; // Initialize round number
 let userHealth = 3; // User's health
-let tempHealth = 3; 
-let timer;
-let timeLimit = 10 * 1000;
+let tempHealth = 3; // Temporary health for the current round
+let timer; // Timer variable
+let timeLimit = 10 * 1000;  // Time limit for each round in milliseconds (10 seconds)
 let startTime; // To track the start time
 let elapsedTime = 0; // To store the elapsed time
-let timerInterval;
+let timerInterval; // To store the timer interval]
 let timeRemaining = timeLimit; // Time limit for each round
 let gameOver = false; // Flag to track if the game is over
 let gameStarted = false; // Flag to track if the game has started
-let sequence = [];
-let userInput = [];
-let lastKeyPressTime = null;
-let keyPressIntervals = [];
-let curremtStreak = 0;
-let longestStreak = 0;
+let sequence = []; // Array to store the generated sequence of keys
+let userInput = []; // Array to store the user's input
+let lastKeyPressTime = null; // To track the last key press time
+let keyPressIntervals = []; // Array to store the intervals between key presses
+let curremtStreak = 0; // Current streak of correct inputs
+let longestStreak = 0; // Longest streak of correct inputs
 
 // Generate a random sequence of arrow keys
 function generateSequence() {
