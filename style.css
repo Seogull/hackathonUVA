@@ -1,3 +1,4 @@
+/* BODY & RAINBOW BACKGROUND */
 body {
     margin: 0;
     height: 100%;
@@ -12,26 +13,29 @@ body {
 }
 
 @keyframes rainbow {
-    0% { background-position: 0% 50%; }
+    0%   { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
 }
+
+/* HEARTS */
 .hearts-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-  }
+}
 
-  .heart {
+.heart {
     font-size: 32px;
     color: red;
     margin: 0 5px;
-  }
+}
 
-  .empty-heart {
+.empty-heart {
     color: lightgray; /* For empty hearts */
-  }
+}
 
+/* SCOREBOARD (LEFT COLUMN) */
 .scoreboard {
     grid-column: 1 / 2;
     grid-row: 1 / 3;
@@ -50,6 +54,7 @@ body {
     font-size: 18px;
 }
 
+/* GAME INFO (TOP CENTER) */
 .game-info {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
@@ -87,6 +92,7 @@ body {
     font-weight: bold;
 }
 
+/* ARROW KEYS CONTAINER (BOTTOM CENTER) */
 .container {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
@@ -123,20 +129,21 @@ body {
     visibility: hidden;
 }
 
+/* KEYS PRESSED & HEALTH (RIGHT COLUMN) */
 .sprite-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start; /* or center if you prefer */
     align-items: center;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
     margin: 10px;
-    overflow: hidden;
-    max-width: calc(100vw - 20px); /* Prevents it from going off screen */
+    overflow: hidden; /* Adjust if you have bigger content */
     box-sizing: border-box;
+    /* remove position: fixed; bottom: 0; left: 0; */
 }
 
 .sprite {
