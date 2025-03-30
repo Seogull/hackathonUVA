@@ -35,6 +35,42 @@ body {
     100% { background-position: 100% 50%; }
 }
 
+.statistics-container {
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 300px;
+    background-color: #f4f4f4;
+    display: none; /* Initially hidden */
+    font-family: Arial, sans-serif;
+}
+
+.statistics-container {
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 300px;
+    background-color: #f4f4f4;
+    display: none; /* Initially hidden */
+    font-family: Arial, sans-serif;
+}
+
+.statistics-container h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.statistics-container .stat {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.statistics-container .stat strong {
+    font-weight: bold;
+}
 .correct {
     background-color: limegreen !important;
     transition: background-color 0.3s ease;

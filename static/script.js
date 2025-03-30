@@ -337,6 +337,54 @@ function getKeyAccuracyStats() {
     };
 }
 
+function displayStatistics() {
+    const statisticsContainer = document.querySelector('.statistics-container');
+    
+    // Create the statistics header
+    const header = document.createElement('h3');
+    header.textContent = 'Round Statistics';
+    statisticsContainer.appendChild(header);
+
+    // Overall accuracy
+    const accuracyStat = document.createElement('div');
+    accuracyStat.classList.add('stat');
+    accuracyStat.innerHTML = `<strong>Overall Accuracy:</strong> ${getOverallAccuracy()}`;
+    statisticsContainer.appendChild(accuracyStat);
+
+    // Average sequence time
+        // Calculate the average time between key presses
+        const waitingTime = (round - 1) * 1000; // Since we stall 1 second before each new round
+        const totalKeyPressTime = keyPressIntervals.reduce((a, b) => a + b, 0) - waitingTime;
+        const avgTimeBetweenPresses = keyPressIntervals.length
+            ? Math.max(totalKeyPressTime / keyPressIntervals.length, 0) // Ensure it doesn’t go negative
+            : 0;
+    const avgTimeStat = document.createElement('div');
+    avgTimeStat.classList.add('stat');
+    avgTimeStat.innerHTML = `<strong>Average Time to Complete Sequence:</strong> ${avgTimeBetweenPresses.toFixed(2)}ms`;
+    statisticsContainer.appendChild(avgTimeStat);
+
+    // Longest streak
+    const streakStat = document.createElement('div');
+    streakStat.classList.add('stat');
+    streakStat.innerHTML = `<strong>Longest Streak:</strong> ${longestStreak}`;
+    statisticsContainer.appendChild(streakStat);
+
+    // Most accurate key
+    const mostAccurateKeyStat = document.createElement('div');
+    mostAccurateKeyStat.classList.add('stat');
+    mostAccurateKeyStat.innerHTML = `<strong>Most Accurate Key:</strong> ${getKeyAccuracyStats().mostAccurate}`;
+    statisticsContainer.appendChild(mostAccurateKeyStat);
+
+    // Least accurate key
+    const leastAccurateKeyStat = document.createElement('div');
+    leastAccurateKeyStat.classList.add('stat');
+    leastAccurateKeyStat.innerHTML = `<strong>Least Accurate Key:</strong> ${getKeyAccuracyStats().leastAccurate}`;
+    statisticsContainer.appendChild(leastAccurateKeyStat);
+
+    // Show the statistics container
+    statisticsContainer.style.display = 'block';
+}
+
 function endGame() {
     console.log("endGame called");
     stopTimer();
@@ -354,6 +402,7 @@ function endGame() {
         gameInfoContainer.insertBefore(statusElement, arrowsContainer);
 
     // Stop listening to key presses
+    displayStatistics();
     stopListening();
     if(userScore > highScore) {
         highScore = userScore; // Update high score if current score is higher
@@ -361,13 +410,7 @@ function endGame() {
         highScoreElement.textContent = `${highScore}`; // Display new high score
     }
     //STATISTICS 
-    // Calculate the average time between key presses
-    const waitingTime = (round - 1) * 1000; // Since we stall 1 second before each new round
-    const totalKeyPressTime = keyPressIntervals.reduce((a, b) => a + b, 0) - waitingTime;
-    const avgTimeBetweenPresses = keyPressIntervals.length
-        ? Math.max(totalKeyPressTime / keyPressIntervals.length, 0) // Ensure it doesn’t go negative
-        : 0;
-    console.log(`Average time between presses: ${avgTimeBetweenPresses.toFixed(2)}ms`);
+
 
     //Key Press Accuracy
     for (let key in keyAccuracy) {
@@ -400,6 +443,10 @@ function resetGame() {
     userScoreElement.textContent = userScore;
     currentStreak = 0; // Reset current streak
     document.getElementById('current-round').textContent = round;
+    const statisticsContainer = document.querySelector('.statistics-container');
+    statisticsContainer.innerHTML = ''; // Clear previous statistics
+    statisticsContainer.style.display = 'none'; // Hide the container again
+
     displayHealth(); // Display initial health
     generateSequence(); // Generate the first sequence
     keyAccuracy = {
