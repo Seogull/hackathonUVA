@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
-  <!-- Scoreboard -->
+  <!-- Scoreboard (Left Column) -->
   <div class="scoreboard">
     <div class="score">
       <h2>Player 1 Time: <span id="player1-time">0</span>s</h2>
@@ -17,17 +17,16 @@
     </div>
   </div>
 
-  <!-- Game Info (Combo display is placed here for top-middle placement) -->
+  <!-- Game Info (Top Center) -->
   <div class="game-info">
     <h1>Multiplayer Arrow Game</h1>
-    <!-- Round number is per player -->
     <div id="game-round">Round 1</div>
     <div id="player-turn">Player 1's turn: Repeat the combo</div>
     <div id="combo-entry-status">🎯 Memorize and repeat the combo!</div>
     <div class="arrows-to-press" id="arrows-to-press"></div>
   </div>
 
-  <!-- Arrows Grid -->
+  <!-- Arrows Grid (Center) -->
   <div class="container">
     <div class="empty"></div>
     <div class="arrow" id="up">↑</div>
@@ -40,32 +39,36 @@
     <div class="empty"></div>
   </div>
 
-  <!-- Key Press Feedback -->
+  <!-- Keys Pressed & Health (Right Column) -->
   <div class="sprite-container">
     <h1>Keys Pressed</h1>
     <div id="output">No key pressed</div>
     <div class="sprite" id="sprite"></div>
   </div>
 
-  <!-- Final Result (Winner and times) -->
-  <div id="final-result" style="font-weight: bold; text-align: center; margin-top: 20px; display: block;"></div>
-
-  <!-- Play Again Button -->
-  <div id="play-again-container" style="display: none; text-align: center; margin-top: 30px;">
-    <button id="play-again-btn" style="
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 8px;
-      background-color: #2ecc71;
-      border: none;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease;">
-      🔁 Play Again
-    </button>
+  <!-- Final Result & Play Again (Bottom Middle) -->
+  <div id="final-footer" style="grid-column: 2 / 3; grid-row: 3 / 4; text-align: center;">
+    <div id="final-result" style="font-weight: bold; margin-top: 20px; display: none;"></div>
+    
+    <!-- ✅ Button is hidden initially, shown only at the end -->
+    <div id="play-again-container" style="display: none; margin-top: 20px;">
+      <button id="play-again-btn" style="
+        padding: 12px 24px;
+        font-size: 18px;
+        border-radius: 8px;
+        background-color: #2ecc71;
+        border: none;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease;">
+        🔁 Play Again
+      </button>
+    </div>
   </div>
 
   <script src="../static/multiplayer.js" defer></script>
 </body>
 </html>
+
+
