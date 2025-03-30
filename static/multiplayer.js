@@ -94,7 +94,6 @@ function getSwordImagePath(key) {
   }
 }
 
-
 function startCountdown(callback) {
   let countdown = 3;
   const status = document.getElementById("combo-entry-status");
