@@ -217,7 +217,16 @@ function resetGame() {
     document.getElementById('current-round').textContent = round;
     displayHealth(); // Display initial health
     generateSequence(); // Generate the first sequence
+
+    window.addEventListener('keydown', keydownListener);
+    const statusElement = document.querySelector('.game-info h2');
+    if (statusElement) {
+        statusElement.remove();
+    }
 }
+document.getElementById("play-again-btn").addEventListener("click", resetGame);
+
+
 
 
 // Start the game
