@@ -39,7 +39,7 @@
     </div>
 
       <!-- Fixed Play Again Button in Top Left -->
-  <div id="play-again-container">
+
     <button id="play-again-btn" style="
       padding: 12px 24px;
       font-size: 18px;
@@ -49,10 +49,13 @@
       color: white;
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: fixed; /* Fix it in place on the screen */
+    bottom: 20px; /* Distance from the bottom */
+    left: 20px; /* Distance from the left */
       transition: transform 0.2s ease;">
       🔁 Play Again
     </button>
-  </div>
+
 
     <script src="/static/script.js" defer></script>
 </body>
