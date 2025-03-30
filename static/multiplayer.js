@@ -172,6 +172,18 @@ function handleKeydown(e) {
   userInput.push(key);
   displaySequence(userInput);
 
+
+  const arrowDiv = document.getElementById(key.replace("Arrow", "").toLowerCase());
+  if (arrowDiv) {
+    const img = arrowDiv.querySelector("img");
+    if (img) {
+      img.classList.add("pressed");
+      setTimeout(() => {
+        img.classList.remove("pressed");
+      }, 100);
+    }
+  }
+
   if (userInput.length === 4) {
     acceptingInput = false;
     const end = Date.now();
@@ -205,6 +217,7 @@ function handleKeydown(e) {
     setTimeout(nextTurn, 1500);
   }
 }
+
 
 function resetGame() {
   console.log("resetGame called");
