@@ -1,0 +1,169 @@
+/* BODY & RAINBOW BACKGROUND */
+body {
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: auto 1fr;
+    animation: rainbow 10s linear infinite;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background-image: url('background_main_menu.png');
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    
+}
+
+@keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+
+.correct {
+    background-color: limegreen !important;
+    transition: background-color 0.3s ease;
+}
+
+.incorrect {
+    background-color: red !important;
+    transition: background-color 0.3s ease;
+}
+
+/* HEARTS */
+.hearts-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.heart {
+    font-size: 32px;
+    color: red;
+    margin: 0 5px;
+}
+
+.empty-heart {
+    color: lightgray; /* For empty hearts */
+}
+
+/* SCOREBOARD (LEFT COLUMN) */
+.scoreboard {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.score h2 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+/* GAME INFO (TOP CENTER) */
+.game-info {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.game-info h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.arrows-to-press {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.arrow-display {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ARROW KEYS CONTAINER (BOTTOM CENTER) */
+.container {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    user-select: none;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+    flex-shrink: 1;
+}
+
+.arrow.pressed {
+    transform: scale(0.9);
+    background-color: lightgray;
+}
+
+.empty {
+    visibility: hidden;
+}
+
+/* KEYS PRESSED & HEALTH (RIGHT COLUMN) */
+.sprite-container {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* or center if you prefer */
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+    overflow: hidden; /* Adjust if you have bigger content */
+    box-sizing: border-box;
+    /* remove position: fixed; bottom: 0; left: 0; */
+}
+
+.sprite {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+}
